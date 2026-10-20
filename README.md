@@ -1,46 +1,85 @@
-# FlyRank ML Internship — ML-03 Task Framing
+# FlyRank ML Internship — Applied Search Intelligence
 
-This repository contains my work for the FlyRank Machine Learning Internship, with a focus on **ML-03: ML Task Framing**.
+This is my workspace for the FlyRank ML Internship, focused on Google Search ranking, content discoverability, and machine learning.
 
-## Assignment notebook
+The project uses anonymized FlyRank search data for educational analysis. Results are for decision support; they do not predict or explain Google's ranking algorithm.
 
-**Notebook:** [W02 — ML Task Framing](work/notebooks/w02_ml_task_framing.ipynb)
+## Getting started
 
-[![Open in Google Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/Sai875/flyrank-ml-internship/blob/main/work/notebooks/w02_ml_task_framing.ipynb)
+1. Read [SETUP.md](SETUP.md) for GitHub, Google Colab, and data-access instructions.
+2. Read [GUIDE.md](GUIDE.md) to understand the repository structure and what to edit.
+3. Read [skills/README.md](skills/README.md) for the AI-assistant instruction library.
+4. Read [DATA_USE.md](DATA_USE.md) before using data.
+5. Keep [docs/data-dictionary.md](docs/data-dictionary.md) open while working with dataset columns.
 
-The notebook frames a machine-learning task using the provided anonymized content-refresh dataset.
+## Open the starter notebooks in Colab
 
-## What the notebook covers
+- [Week 1 — First look and discovery](https://colab.research.google.com/github/flyrank-bih/flyrank-ml-internship-starter/blob/main/notebooks/01_first_look_and_discovery.ipynb)
+- [Week 2 — Your first readable model](https://colab.research.google.com/github/flyrank-bih/flyrank-ml-internship-starter/blob/main/notebooks/02_your_first_readable_model.ipynb)
+- [Weeks 3+ — Working with the full release](https://colab.research.google.com/github/flyrank-bih/flyrank-ml-internship-starter/blob/main/notebooks/03_working_with_the_full_release.ipynb)
 
-- **Task type:** Defines the task as a ranking/classification problem for prioritizing pages for review.
-- **Target and proxy label:** Explains the measurable proxy used in the notebook and its limitations.
-- **Success metric:** Uses Precision@K to assess whether high-ranked pages contain more of the proxy-positive cases.
-- **Data and unit of analysis:** Inspects the real dataset and identifies what each row represents.
-- **Why machine learning:** Explains why a learned score may be more useful than a single fixed rule, while keeping a simple baseline for comparison.
-- **Self-check and limitations:** Records assumptions, risks, and checks before moving to model building.
+The full warehouse is hosted at [FlyRank/internship-warehouse](https://huggingface.co/datasets/FlyRank/internship-warehouse). Access is gated; request access and accept the data-use terms before connecting.
 
-## Dataset
+## Repository structure
 
-The notebook uses the repository's anonymized dataset:
+| Path | Purpose |
+|---|---|
+| `notebooks/` | Starter notebooks for Weeks 1–2 and full-release exploration |
+| `scripts/` | Data preparation, baseline scoring, model training, evaluation, and report generation |
+| `data/raw/content_refresh_anonymized.csv` | Anonymized starter dataset, if included in this repository |
+| `outputs/` | Example pipeline outputs |
+| `work/` | My lane experiments, assignments, and capstone work |
+| `work/notebooks/` | My assignment notebooks |
+| `docs/` | ML foundations, lane guidance, tooling guidance, and data dictionary |
+| `skills/` | Instructions for AI-assisted work |
 
-`data/raw/content_refresh_anonymized.csv`
+## Assignment work
 
-The dataset is used for learning and analysis. The notebook treats the label as a **proxy**, not ground truth about Google's ranking algorithm or the true potential of a page.
+### W02 — ML Task Framing
 
-**Leakage caution:** Variables that directly encode the label or related outcome information (such as `trend_direction` and `trend_pct`, where applicable) should not be used as predictive features without a careful leakage review.
+Notebook: [work/notebooks/w02_ml_task_framing.ipynb](work/notebooks/w02_ml_task_framing.ipynb)
 
-## How to open the notebook
+This exercise frames a ranking/classification task for prioritizing content pages for review. It defines a proxy label, success metric, unit of analysis, and limitations. The label is a proxy, not ground truth about Google's ranking algorithm.
 
-1. Open the notebook link above, or browse to `work/notebooks/w02_ml_task_framing.ipynb`.
-2. To run it in Colab, choose **Open in Colab** and run the cells from top to bottom.
-3. If you make changes in Colab, save a copy back to this GitHub repository.
+### W03 — Data Contract
 
-## Scope and limitations
+Required notebook: `work/notebooks/w03_data_contract.ipynb`
 
-This is an educational task-framing exercise based on anonymized observational data. Results are descriptive and intended to support prioritization; they do not establish causation or reveal Google's ranking algorithm.
+The W03 notebook should contain:
+1. Five plain-English data-contract answers: row grain, source tables, time window, target/proxy, and exclusions.
+2. Exactly three verification queries with outputs: grain, row count/date span, and availability filtered using `IS TRUE`.
+3. A feature frame with no more than five predictive features, each with an explanation of when it is available.
+4. A deliberate label-leakage experiment, with the leaked feature removed from the final inputs and the honest score retained.
+5. One named limitation of the data slice.
 
-## Repository
+Use a mid-panel month such as March 2026 for development. Treat June 2026, the final month in the `_sample` table, as a sealed test month and do not use it to develop label logic. Confirm actual table and column names from the schema before running queries.
 
-- **Repository:** https://github.com/Sai875/flyrank-ml-internship
-- **Assignment notebook:** [work/notebooks/w02_ml_task_framing.ipynb](work/notebooks/w02_ml_task_framing.ipynb)
+**Status note:** The W03 notebook must exist and be committed at the required path before the assignment is complete.
 
+## Local workflow (optional)
+
+```bash
+git clone <this-repo-url>
+cd flyrank-ml-internship
+pip install -r requirements.txt
+python scripts/run_all.py
+```
+
+This runs the reference pipeline on the bundled sample when the required files and dependencies are available.
+
+## Data safety
+
+- Never commit Hugging Face tokens, passwords, or other credentials.
+- Store `HF_TOKEN` in Google Colab Secrets when required; do not paste it into notebook cells.
+- Follow [DATA_USE.md](DATA_USE.md) and the dataset access terms.
+- Never add private client data or unapproved warehouse exports to this public repository.
+- Describe results as observed, measured, directional, or decision-support findings—not as predictions of Google's algorithm.
+
+## Submission workflow
+
+1. Complete the assignment in the required notebook under `work/notebooks/`.
+2. Run all cells and ensure outputs are visible.
+3. Save the notebook to this repository and commit it to the `main` branch.
+4. Submit this GitHub repository URL on the corresponding assignment card.
+
+Repository: https://github.com/Sai875/flyrank-ml-internship
