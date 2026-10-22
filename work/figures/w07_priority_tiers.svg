@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="470" viewBox="0 0 900 470" role="img" aria-labelledby="title desc">
+<title id="title">Week 7 review queue by priority tier</title>
+<desc id="desc">A 6,163-row client-grouped holdout queue divided into high, medium, and monitor capacity tiers. Tier sizes follow the notebook's top 10 percent and top 30 percent rank cutoffs.</desc>
+<rect width="900" height="470" fill="#ffffff"/>
+<text x="64" y="54" font-family="Arial, sans-serif" font-size="26" font-weight="700" fill="#172033">Week 7 Review Queue by Priority Tier</text>
+<text x="64" y="82" font-family="Arial, sans-serif" font-size="14" fill="#596579">6,163 held-out pages · tiers are capacity-planning labels, not recovery probabilities</text>
+<line x1="64" y1="112" x2="836" y2="112" stroke="#d7dde5" stroke-width="1"/>
+<g font-family="Arial, sans-serif" font-size="15" fill="#263247">
+<text x="64" y="157" font-weight="700">HIGH</text>
+<text x="64" y="180" font-size="13" fill="#596579">Top ~10% by review score</text>
+<rect x="310" y="140" width="110.3" height="34" rx="5" fill="#2563eb"/>
+<text x="432" y="162" font-weight="700">617 pages (10.0%)</text>
+<text x="64" y="247" font-weight="700">MEDIUM</text>
+<text x="64" y="270" font-size="13" fill="#596579">Next ~20% by review score</text>
+<rect x="310" y="230" width="220.3" height="34" rx="5" fill="#0f766e"/>
+<text x="542" y="252" font-weight="700">1,232 pages (20.0%)</text>
+<text x="64" y="337" font-weight="700">MONITOR</text>
+<text x="64" y="360" font-size="13" fill="#596579">Remaining queue</text>
+<rect x="310" y="320" width="771" height="34" rx="5" fill="#64748b" transform="translate(0 0) scale(0.65 1)"/>
+<text x="817" y="342" text-anchor="end" font-weight="700" fill="#263247">4,314 pages (70.0%)</text>
+</g>
+<text x="64" y="423" font-family="Arial, sans-serif" font-size="12" fill="#64748b">Source: committed w07_action_playbook.ipynb. Human review required before any content change.</text>
+</svg>
