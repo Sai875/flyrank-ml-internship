@@ -146,6 +146,8 @@ a{color:#075eaa;text-underline-offset:3px}a:hover{color:#063e70}header{backgroun
 <p>The repository contains the notebooks that document the model, validation audit and action playbook. Run them from a fresh Colab runtime using <strong>Runtime → Run all</strong>; confirm the grouped split has zero client overlap and compare the printed metrics with those reported here. The model seed is 42. Data access and available files may change, so verify the dataset release before rerunning.</p>
 <div class="links">
 <a href="https://github.com/Sai875/flyrank-ml-internship">Repository</a>
+<a href="https://github.com/Sai875/flyrank-ml-internship/blob/main/work/notebooks/w03_data_contract.ipynb">Week 3 · Warehouse data contract</a>
+<a href="https://github.com/Sai875/flyrank-ml-internship/blob/main/work/notebooks/w04_baseline_score.ipynb">Week 4 · Rule baseline</a>
 <a href="https://github.com/Sai875/flyrank-ml-internship/blob/main/work/notebooks/w05_model.ipynb">Week 5 · Model vs baseline</a>
 <a href="https://github.com/Sai875/flyrank-ml-internship/blob/main/work/notebooks/w06_validation_audit_hf_connected.ipynb">Week 6 · Validation &amp; leakage audit</a>
 <a href="https://github.com/Sai875/flyrank-ml-internship/blob/main/work/notebooks/w07_action_playbook.ipynb">Week 7 · Action playbook</a>
@@ -154,9 +156,13 @@ a{color:#075eaa;text-underline-offset:3px}a:hover{color:#063e70}header{backgroun
 <p class="small">Notebook execution and export creation should be confirmed in a fresh runtime before treating this artifact as a final reproducibility check. The queue CSV is intentionally not linked or committed because it is a row-level output.</p>
 <h3>References and implementation documentation</h3>
 <ul>
-<li><a href="https://huggingface.co/datasets/FlyRank/internship-starter">FlyRank internship starter dataset repository</a>.</li>
+<li><a href="https://huggingface.co/datasets/FlyRank/internship-starter">FlyRank internship starter dataset repository</a> — the 30,000-row modeling cohort used for the reported metrics.</li>
+<li><a href="https://huggingface.co/datasets/FlyRank/internship-warehouse">FlyRank internship warehouse</a> — gated release metadata and daily fact tables; warehouse counts are reported separately from the model cohort.</li>
+<li><a href="https://github.com/flyrank-bih/flyrank-ml-internship-starter/blob/main/skills/flyrank/flyrank-data/SKILL.md">FlyRank data guide</a> — release build, table grains, date range, and data-safety rules.</li>
 <li><a href="https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GroupShuffleSplit.html">scikit-learn: GroupShuffleSplit</a> — grouped train/test splitting.</li>
 <li><a href="https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html">scikit-learn: LogisticRegression</a> — estimator documentation.</li>
+<li><a href="https://2021.naacl.org/calls/reproducibility-checklist/">NAACL reproducibility checklist</a> — report sample sizes, splits, metrics, and preprocessing clearly.</li>
+<li><a href="https://huggingface.co/docs/evaluate/considerations">Hugging Face evaluation considerations</a> — keep train/test evaluation separate and define the test population.</li>
 <li><a href="https://docs.github.com/en/pages">GitHub Pages documentation</a> — static-site hosting and publishing.</li>
 </ul>
 </section>
