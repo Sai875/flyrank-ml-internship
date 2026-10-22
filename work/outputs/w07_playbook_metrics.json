@@ -1,0 +1,19 @@
+{
+  "artifact": "ML-10 Week 7 Content Action Playbook",
+  "source_notebook": "work/notebooks/w07_action_playbook.ipynb",
+  "source_note": "Snapshot transcribed from the committed notebook's visible validation output; values are rounded to 3 decimal places. Re-run the notebook to regenerate the full-precision receipt before using exact values in the paper.",
+  "seed": 42,
+  "split": "client-grouped holdout",
+  "train_rows": 23837,
+  "test_rows": 6163,
+  "client_overlap": 0,
+  "test_base_rate": 0.511,
+  "precision_at_50": 0.62,
+  "lift_at_50": 1.213,
+  "roc_auc": 0.563,
+  "average_precision": 0.555,
+  "queue_rows": 6163,
+  "queue_target_label_exported": false,
+  "intended_use": "Human-reviewed prioritization of pages for inspection; not a future-outcome forecast or causal estimate.",
+  "metrics_precision": "rounded_to_3_decimal_places"
+}
