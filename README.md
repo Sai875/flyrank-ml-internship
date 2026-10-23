@@ -50,6 +50,15 @@ The full warehouse is hosted at [FlyRank/internship-warehouse](https://huggingfa
 | `docs/` | ML foundations, lane guidance, tooling guidance, and data dictionary |
 | `skills/` | Instructions for AI-assisted work |
 
+## ML-10 — Content action playbook
+
+- [Executed action-playbook notebook](work/notebooks/w07_action_playbook.ipynb) · [Open in Colab](https://colab.research.google.com/github/Sai875/flyrank-ml-internship/blob/main/work/notebooks/w07_action_playbook.ipynb)
+- [Aggregate playbook metrics receipt](work/outputs/w07_playbook_metrics.json)
+- [Priority-tier figure](work/figures/w07_priority_tiers.svg)
+- The ranked queue is generated as `work/outputs/w07_ranked_action_queue.csv` when the notebook runs. It is intentionally excluded from Git by the repository's data-safety rule; do not commit it.
+
+The playbook is for human-reviewed triage only. Reason codes are review cues, not explanations of model internals; scores are not calibrated probabilities of recovery. Content changes, publishing, URL changes, and budget decisions must not be automated from this ranking.
+
 ## Assignment work
 
 ### W02 — ML Task Framing
