@@ -1,0 +1,110 @@
+name: Execute capstone assignment
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "work/notebooks/capstone.ipynb"
+      - ".github/workflows/capstone-auto-run.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: capstone-auto-run
+  cancel-in-progress: false
+
+jobs:
+  execute:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install notebook dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install nbformat nbclient ipykernel numpy pandas matplotlib scikit-learn requests huggingface_hub
+
+      - name: Execute capstone notebook
+        env:
+          MPLBACKEND: Agg
+          HF_HUB_DISABLE_IMPLICIT_TOKEN: "1"
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import nbformat
+          from nbclient import NotebookClient
+
+          source = Path("work/notebooks/capstone.ipynb")
+          notebook = nbformat.read(source, as_version=4)
+          client = NotebookClient(
+              notebook,
+              timeout=900,
+              kernel_name="python3",
+              allow_errors=False,
+              resources={"metadata": {"path": str(Path.cwd())}},
+          )
+          try:
+              executed = client.execute()
+          except Exception:
+              nbformat.write(notebook, "/tmp/capstone-executed-partial.ipynb")
+              raise
+          nbformat.write(executed, "/tmp/capstone-executed.ipynb")
+          print(f"Executed {len(executed.cells)} cells without notebook errors.")
+          PY
+
+      - name: Verify report-safe outputs
+        run: |
+          test -f work/outputs/capstone_metrics.json
+          test -f work/figures/capstone_precision_at_k.png
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          metrics = json.loads(Path("work/outputs/capstone_metrics.json").read_text(encoding="utf-8"))
+          assert metrics.get("experiment") == "capstone_client_grouped_holdout"
+          assert metrics.get("overlapping_clients") == 0, "Client overlap detected."
+          assert metrics.get("train_rows", 0) > 0 and metrics.get("test_rows", 0) > 0
+          assert metrics.get("metrics"), "No baseline/model comparison found."
+          print("Metrics verified: client overlap is zero and baseline/model results are present.")
+          print(json.dumps({
+              "train_rows": metrics["train_rows"],
+              "test_rows": metrics["test_rows"],
+              "train_clients": metrics["train_clients"],
+              "test_clients": metrics["test_clients"],
+              "overlapping_clients": metrics["overlapping_clients"],
+              "metrics": metrics["metrics"],
+          }, indent=2))
+          PY
+          cp /tmp/capstone-executed.ipynb work/notebooks/capstone.ipynb
+          # Runtime data must not be committed.
+          rm -f data/raw/content_refresh_anonymized.csv
+
+      - name: Commit executed notebook and aggregate outputs
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add work/notebooks/capstone.ipynb work/outputs/capstone_metrics.json work/figures/capstone_precision_at_k.png
+          git diff --cached --quiet && echo "No generated changes to commit." && exit 0
+          git commit -m "Execute capstone assignment [skip ci]"
+          git push
+
+      - name: Upload execution artifacts for download
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: capstone-execution-${{ github.run_number }}
+          path: |
+            /tmp/capstone-executed.ipynb
+            /tmp/capstone-executed-partial.ipynb
+            work/outputs/capstone_metrics.json
+            work/figures/capstone_precision_at_k.png
+          if-no-files-found: ignore
+          retention-days: 14
