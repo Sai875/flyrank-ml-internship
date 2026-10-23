@@ -4,6 +4,17 @@ This is my workspace for the FlyRank ML Internship, focused on Google Search ran
 
 The project uses anonymized FlyRank search data for educational analysis. Results are for decision support; they do not predict or explain Google's ranking algorithm.
 
+
+## Capstone report
+
+- **Published paper:** https://sai875.github.io/flyrank-ml-internship/
+- **Source HTML:** [docs/index.html](docs/index.html)
+- **Aggregate evaluation metrics:** [work/outputs/capstone_metrics.json](work/outputs/capstone_metrics.json)
+- **Precision@K chart:** [work/figures/capstone_precision_at_k.png](work/figures/capstone_precision_at_k.png)
+
+The paper is deployed from `docs/` by the GitHub Actions workflow at `.github/workflows/deploy-pages.yml`. If the published URL is not available yet, open **Settings → Pages** and set the build source to **GitHub Actions**, then check the **Actions** tab for the deployment result. Do not commit raw datasets, client-level rows, credentials, or tokens.
+
+
 ## Getting started
 
 1. Read [SETUP.md](SETUP.md) for GitHub, Google Colab, and data-access instructions.
