@@ -43,27 +43,35 @@ jobs:
             --execute work/notebooks/w07_action_playbook.ipynb \
             --output w07_action_playbook.ipynb \
             --output-dir /tmp/w07-executed \
-            --ExecutePreprocessor.timeout=900
+            --ExecutePreprocessor.cwd=. \
+            --ExecutePreprocessor.timeout=900 \
+            --ExecutePreprocessor.allow_errors=True
           cp /tmp/w07-executed/w07_action_playbook.ipynb work/notebooks/w07_action_playbook.ipynb
-          test -f work/outputs/w07_ranked_action_queue.csv
-          test -f work/outputs/w07_playbook_metrics.json
-          test -f work/figures/w07_priority_tiers.png
-          # Row-level queue and the starter CSV are runtime-only and must never enter Git.
-          rm -f work/outputs/w07_ranked_action_queue.csv data/raw/content_refresh_anonymized.csv
           python - <<'PY'
           import json
           from pathlib import Path
           nb = json.loads(Path("work/notebooks/w07_action_playbook.ipynb").read_text(encoding="utf-8"))
           errors = [
-              (i, out.get("ename"), out.get("evalue"))
+              {
+                  "cell": i,
+                  "ename": out.get("ename"),
+                  "evalue": out.get("evalue"),
+                  "traceback": "\\n".join(out.get("traceback", []))[-1800:],
+              }
               for i, cell in enumerate(nb["cells"])
               for out in cell.get("outputs", [])
               if out.get("output_type") == "error"
           ]
           if errors:
-              raise SystemExit(f"Notebook contains execution errors: {errors}")
+              print(json.dumps(errors, indent=2))
+              raise SystemExit(f"Notebook has {len(errors)} execution error(s).")
           print(f"Notebook executed: {len(nb['cells'])} cells; no cell errors.")
           PY
+          test -f work/outputs/w07_ranked_action_queue.csv
+          test -f work/outputs/w07_playbook_metrics.json
+          test -f work/figures/w07_priority_tiers.png
+          # Row-level queue and the starter CSV are runtime-only and must never enter Git.
+          rm -f work/outputs/w07_ranked_action_queue.csv data/raw/content_refresh_anonymized.csv
 
       - name: Commit executed notebook and report-safe outputs
         run: |
