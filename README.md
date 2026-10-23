@@ -12,7 +12,7 @@ The project uses anonymized FlyRank search data for educational analysis. Result
 - **Aggregate evaluation metrics:** [work/outputs/capstone_metrics.json](work/outputs/capstone_metrics.json)
 - **Precision@K chart:** [work/figures/capstone_precision_at_k.png](work/figures/capstone_precision_at_k.png)
 
-The paper is deployed from `docs/` by the GitHub Actions workflow at `.github/workflows/deploy-pages.yml`. If the published URL is not available yet, open **Settings → Pages** and set the build source to **GitHub Actions**, then check the **Actions** tab for the deployment result. Do not commit raw datasets, client-level rows, credentials, or tokens.
+The paper is published from `main` → `/docs` using GitHub Pages. Check **Settings → Pages** to confirm the publishing source is `main` and `/docs`, then use the **Actions** tab to inspect the latest Pages build. Do not commit raw datasets, client-level rows, credentials, or tokens.
 
 
 ## Getting started
