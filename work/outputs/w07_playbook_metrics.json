@@ -1,19 +1,39 @@
 {
-  "artifact": "ML-10 Week 7 Content Action Playbook",
-  "source_notebook": "work/notebooks/w07_action_playbook.ipynb",
-  "source_note": "Snapshot transcribed from the committed notebook's visible validation output; values are rounded to 3 decimal places. Re-run the notebook to regenerate the full-precision receipt before using exact values in the paper.",
   "seed": 42,
   "split": "client-grouped holdout",
   "train_rows": 23837,
   "test_rows": 6163,
   "client_overlap": 0,
-  "test_base_rate": 0.511,
+  "test_base_rate": 0.5109524582184002,
   "precision_at_50": 0.62,
-  "lift_at_50": 1.213,
-  "roc_auc": 0.563,
-  "average_precision": 0.555,
+  "lift_at_50": 1.2134201333756747,
+  "roc_auc": 0.5625333602498176,
+  "average_precision": 0.5546853804804083,
   "queue_rows": 6163,
   "queue_target_label_exported": false,
-  "intended_use": "Human-reviewed prioritization of pages for inspection; not a future-outcome forecast or causal estimate.",
-  "metrics_precision": "rounded_to_3_decimal_places"
+  "priority_tier_counts": {
+    "HIGH": 617,
+    "MEDIUM": 1232,
+    "MONITOR": 4314
+  },
+  "action_code_counts": {
+    "DEMAND_AND_INDEXATION_CHECK": 457,
+    "EDITORIAL_TRIAGE": 2022,
+    "SNIPPET_AND_INTENT_REVIEW": 3012,
+    "VERIFY_MEASUREMENT": 62,
+    "VISIBILITY_DIAGNOSIS": 610
+  },
+  "reason_code_counts": {
+    "GENERAL_REVIEW": 2022,
+    "LOW_CTR": 3074,
+    "LOW_DEMAND_OR_REACH": 3080,
+    "LOW_VISIBILITY": 1560,
+    "NO_POSITION_DATA": 62
+  },
+  "source": "FlyRank/internship-starter/content_refresh_anonymized.csv",
+  "model": "LogisticRegression; numeric median imputation + scaling; content_type one-hot",
+  "tier_policy": "HIGH=top 10%; MEDIUM=next to top 30%; MONITOR=remaining held-out rows",
+  "evidence_boundary": "Observed decline proxy from one snapshot; ranking is review prioritization, not future prediction or causal effect.",
+  "metrics_precision": "full-precision evaluation metrics and aggregate queue counts; no row-level records",
+  "generated_utc": "2026-10-23T11:59:47.526877+00:00"
 }
