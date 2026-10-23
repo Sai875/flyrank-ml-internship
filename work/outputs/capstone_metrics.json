@@ -1,0 +1,53 @@
+{
+  "experiment": "capstone_client_grouped_holdout",
+  "seed": 42,
+  "split": "GroupShuffleSplit test_size=0.20 grouped by client_id",
+  "train_rows": 23837,
+  "test_rows": 6163,
+  "train_clients": 25,
+  "test_clients": 7,
+  "overlapping_clients": 0,
+  "test_label_rate": 0.5109524582184002,
+  "features_numeric": [
+    "days_since_last_update",
+    "impressions_90d",
+    "ctr",
+    "avg_position_model",
+    "avg_position_no_data"
+  ],
+  "features_categorical": [
+    "content_type"
+  ],
+  "metrics": [
+    {
+      "k": 10,
+      "metric": "Precision@10",
+      "Week-4 baseline": 0.4,
+      "Logistic Regression": 0.5,
+      "test label rate": 0.5109524582184002
+    },
+    {
+      "k": 20,
+      "metric": "Precision@20",
+      "Week-4 baseline": 0.5,
+      "Logistic Regression": 0.55,
+      "test label rate": 0.5109524582184002
+    },
+    {
+      "k": 50,
+      "metric": "Precision@50",
+      "Week-4 baseline": 0.52,
+      "Logistic Regression": 0.62,
+      "test label rate": 0.5109524582184002
+    },
+    {
+      "k": 100,
+      "metric": "Precision@100",
+      "Week-4 baseline": 0.53,
+      "Logistic Regression": 0.6,
+      "test label rate": 0.5109524582184002
+    }
+  ],
+  "caveat": "Observed decline proxy; decision support only; no causal claims.",
+  "generated_utc": "2026-10-23T10:45:28.115145+00:00"
+}
