@@ -33,19 +33,28 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install nbconvert nbclient jupyter numpy pandas matplotlib scikit-learn huggingface_hub
 
-      - name: Execute notebook from top to bottom
+      - name: Execute notebook from repository root
         env:
           MPLBACKEND: Agg
         run: |
           mkdir -p /tmp/w07-executed
-          jupyter nbconvert \
-            --to notebook \
-            --execute work/notebooks/w07_action_playbook.ipynb \
-            --output w07_action_playbook.ipynb \
-            --output-dir /tmp/w07-executed \
-            --ExecutePreprocessor.cwd=. \
-            --ExecutePreprocessor.timeout=900 \
-            --ExecutePreprocessor.allow_errors=True
+          python - <<'PY'
+          from pathlib import Path
+          import nbformat
+          from nbclient import NotebookClient
+          source = Path("work/notebooks/w07_action_playbook.ipynb")
+          notebook = nbformat.read(source, as_version=4)
+          client = NotebookClient(
+              notebook,
+              timeout=900,
+              kernel_name="python3",
+              allow_errors=True,
+              resources={"metadata": {"path": str(Path.cwd())}},
+          )
+          executed = client.execute()
+          nbformat.write(executed, "/tmp/w07-executed/w07_action_playbook.ipynb")
+          print(f"Executed {len(executed.cells)} cells with repository root as the working directory.")
+          PY
           cp /tmp/w07-executed/w07_action_playbook.ipynb work/notebooks/w07_action_playbook.ipynb
           python - <<'PY'
           import json
