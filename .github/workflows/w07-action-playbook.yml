@@ -79,6 +79,58 @@ jobs:
           test -f work/outputs/w07_ranked_action_queue.csv
           test -f work/outputs/w07_playbook_metrics.json
           test -f work/figures/w07_priority_tiers.png
+          python - <<'PY'
+          import json
+          import math
+          import subprocess
+          from pathlib import Path
+          from PIL import Image
+
+          metrics_path = Path("work/outputs/w07_playbook_metrics.json")
+          metrics = json.loads(metrics_path.read_text(encoding="utf-8"))
+          required = {
+              "seed", "client_overlap", "test_base_rate", "precision_at_50",
+              "lift_at_50", "roc_auc", "average_precision", "queue_rows",
+              "queue_target_label_exported", "priority_tier_counts",
+          }
+          missing = required - metrics.keys()
+          assert not missing, f"Metrics missing required keys: {sorted(missing)}"
+          assert metrics["seed"] == 42, "Unexpected random seed; reproducibility contract changed."
+          assert metrics["client_overlap"] == 0, "Train/test client overlap detected."
+          assert metrics["queue_target_label_exported"] is False, "Target labels must not be exported."
+          assert metrics["queue_rows"] > 0, "Queue is empty."
+          for key in ("test_base_rate", "precision_at_50", "roc_auc", "average_precision"):
+              value = float(metrics[key])
+              assert math.isfinite(value) and 0 <= value <= 1, f"Invalid metric {key}: {value}"
+          assert math.isfinite(float(metrics["lift_at_50"])) and metrics["lift_at_50"] >= 0
+          tier_counts = metrics["priority_tier_counts"]
+          assert sum(int(v) for v in tier_counts.values()) == int(metrics["queue_rows"]), (
+              "Priority-tier counts do not sum to queue_rows."
+          )
+
+          figure = Path("work/figures/w07_priority_tiers.png")
+          assert figure.stat().st_size > 1000, "Priority-tier PNG is suspiciously small."
+          with Image.open(figure) as im:
+              im.verify()
+          with Image.open(figure) as im:
+              assert im.width >= 100 and im.height >= 100, "Priority-tier figure dimensions are invalid."
+
+          tracked = subprocess.check_output(["git", "ls-files"], text=True).splitlines()
+          forbidden = {
+              "work/outputs/w07_ranked_action_queue.csv",
+              "data/raw/content_refresh_anonymized.csv",
+          }
+          leaked = sorted(forbidden.intersection(tracked))
+          assert not leaked, f"Sensitive/runtime data must not be tracked: {leaked}"
+          print("Validated W07 metrics, deterministic seed, grouped split, tier totals, PNG, and data-safety guard.")
+          print(json.dumps({
+              "seed": metrics["seed"],
+              "queue_rows": metrics["queue_rows"],
+              "precision_at_50": metrics["precision_at_50"],
+              "client_overlap": metrics["client_overlap"],
+              "priority_tier_counts": tier_counts,
+          }, indent=2))
+          PY
           # Row-level queue and the starter CSV are runtime-only and must never enter Git.
           rm -f work/outputs/w07_ranked_action_queue.csv data/raw/content_refresh_anonymized.csv
 
