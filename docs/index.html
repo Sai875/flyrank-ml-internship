@@ -22,7 +22,7 @@ a{color:#075eaa;text-underline-offset:3px}a:hover{color:#063e70}header{backgroun
 </div></header>
 <div class="layout">
 <nav class="toc" aria-label="Paper contents"><strong>In this paper</strong>
-<a href="#abstract">Title + Abstract</a><a href="#introduction">Introduction</a><a href="#data">Data</a><a href="#methodology">Methodology</a><a href="#results">Results</a><a href="#limitations">Limitations</a><a href="#recommendations">Ranked recommendations</a><a href="#reproducibility">Reproducibility</a><a href="#acknowledgments">Acknowledgments</a>
+<a href="#abstract">Title + Abstract</a><a href="#introduction">Introduction</a><a href="#data">Data</a><a href="#methodology">Methodology</a><a href="#results">Results</a><a href="#insights">Evidence-backed insights</a><a href="#limitations">Limitations</a><a href="#recommendations">Ranked recommendations</a><a href="#reproducibility">Reproducibility</a><a href="#presentation">Presentation outline</a><a href="#acknowledgments">Acknowledgments</a>
 </nav>
 <main>
 <section id="abstract">
@@ -111,8 +111,19 @@ a{color:#075eaa;text-underline-offset:3px}a:hover{color:#063e70}header{backgroun
 </figure>
 <div class="callout"><strong>Interpretation.</strong> The observed result is promising enough to test as a review aid, but modest AUC, a small number of held-out client groups, and the contemporaneous proxy label limit any broad claim of generalization.</div>
 </section>
+<section id="insights">
+<h2>5. Evidence-backed insights</h2>
+<p>The current notebook run produces four review findings from the client-grouped holdout. They are deliberately framed as measured triage evidence, not claims about future search performance.</p>
+<ol>
+<li><strong>The learned ranking beats the rule at all reported queue sizes.</strong> Precision@10 is 0.500 vs 0.400; Precision@20 is 0.550 vs 0.400; Precision@50 is 0.620 vs 0.320; and Precision@100 is 0.600 vs 0.310. <em>Action:</em> keep the learned ranker as a candidate ordering aid and compare it with the rule on every new evaluation.</li>
+<li><strong>The evidence supports top-K triage, not a strong general-purpose classifier.</strong> Precision@50 is 0.620 against a 0.511 test proxy rate (1.21× lift), while ROC-AUC is 0.563 and average precision is 0.555. <em>Action:</em> choose K from actual reviewer capacity and validate on a future time window; do not interpret scores as calibrated probabilities of recovery.</li>
+<li><strong>Client grouping reduces a common validation leak, but unseen-client evidence is limited.</strong> The split contains 23,837 train rows across 25 clients and 6,163 test rows across 7 clients, with zero client overlap. <em>Action:</em> repeat the experiment across more client groups and a future time period before operational use.</li>
+<li><strong>Label leakage can make a weak model appear excellent.</strong> The invalid negative control that adds <code>trend_pct</code> reaches Precision@50 1.000 and ROC-AUC 0.955, compared with 0.620 and 0.563 for the honest feature set. <em>Action:</em> keep label-source fields excluded and rerun leakage checks whenever the target or feature frame changes.</li>
+</ol>
+<div class="callout warning"><strong>Decision boundary.</strong> A high score means “inspect this record earlier,” not “make this edit” or “traffic will recover.” The action playbook remains human-reviewed.</div>
+</section>
 <section id="limitations">
-<h2>5. Limitations &amp; honest framing</h2>
+<h2>6. Limitations &amp; honest framing</h2>
 <ul>
 <li><strong>Not the full warehouse.</strong> This experiment uses a 30,000-row starter CSV, not the broader 79-million-row production dataset described in the assignment context.</li>
 <li><strong>No declared calendar window.</strong> The inspected starter artifact does not provide a reliable extraction-date range in the notebook outputs. Only the trailing 90-day metric window is explicit.</li>
@@ -125,7 +136,7 @@ a{color:#075eaa;text-underline-offset:3px}a:hover{color:#063e70}header{backgroun
 <p>The strongest supported claim is: <em>On this anonymized starter dataset, Logistic Regression ranked the observed decline proxy more effectively than the reproduced rule at the evaluated top-K cutoffs on a client-grouped holdout, supporting further testing as human-review decision support.</em></p>
 </section>
 <section id="recommendations">
-<h2>6. Ranked recommendations: the action playbook</h2>
+<h2>7. Ranked recommendations: the action playbook</h2>
 <p>These are ordered review priorities, not automatic edits. Reason codes are transparent heuristics to start diagnosis; they are not causal explanations of the model.</p>
 <table><thead><tr><th>Priority</th><th>Reason code / cue</th><th>First human check</th><th>Possible next step only if verified</th></tr></thead><tbody>
 <tr><td>1</td><td><code>NO_POSITION_DATA</code></td><td>Check reporting freshness, indexation and missing data.</td><td>Fix measurement or investigate indexing before editing content.</td></tr>
@@ -143,7 +154,7 @@ a{color:#075eaa;text-underline-offset:3px}a:hover{color:#063e70}header{backgroun
 <p class="small">Cost/value note: the Week 7 notebook includes an illustrative planning scenario, not measured ROI. No monetary return is claimed here.</p>
 </section>
 <section id="reproducibility">
-<h2>7. Reproducibility</h2>
+<h2>8. Reproducibility</h2>
 <p>The repository contains the notebooks that document the model, validation audit and action playbook. Run them from a fresh Colab runtime using <strong>Runtime → Run all</strong>; confirm the grouped split has zero client overlap and compare the printed metrics with those reported here. The model seed is 42. Data access and available files may change, so verify the dataset release before rerunning.</p>
 <div class="links">
 <a href="https://github.com/Sai875/flyrank-ml-internship">Repository</a>
@@ -170,8 +181,21 @@ a{color:#075eaa;text-underline-offset:3px}a:hover{color:#063e70}header{backgroun
 <li><a href="https://docs.github.com/en/pages">GitHub Pages documentation</a> — static-site hosting and publishing.</li>
 </ul>
 </section>
+<section id="presentation">
+<h2>9. Presentation outline</h2>
+<p>The same evidence can be presented in a short six-slide review. Keep the top-K results and leakage control visible, and make the handoff to human review explicit.</p>
+<ol>
+<li><strong>Problem and decision.</strong> Explain the page-review bottleneck and the narrow goal: rank which records to inspect first, not predict guaranteed recovery.</li>
+<li><strong>Data and target.</strong> Describe the 30,000-row anonymized starter snapshot, the observed <code>trend_direction == "down"</code> proxy, and the public-safe reporting boundary.</li>
+<li><strong>Method and validation.</strong> Compare Logistic Regression with the transparent rule baseline; show the client-grouped 80/20 split, seed 42, 25 train clients, 7 test clients, and zero client overlap.</li>
+<li><strong>Results at reviewer capacity.</strong> Show Precision@10, @20, @50 and @100 beside the rule and test proxy rate; call out Precision@50 of 0.620 vs 0.320.</li>
+<li><strong>Leakage and limitations.</strong> Show why <code>trend_pct</code> is invalid; note ROC-AUC 0.563 and limited coverage of seven held-out clients; clarify the snapshot label is not a future outcome.</li>
+<li><strong>Action playbook and next experiment.</strong> Walk through measurement, indexing, intent, CTR, visibility and freshness checks; propose future-window validation and state the no-automatic-edit rule.</li>
+</ol>
+<p class="small">Suggested talk track: problem → data → method → evidence → risk → action. Use the metrics generated by the latest notebook execution if data or code changes.</p>
+</section>
 <section id="acknowledgments">
-<h2>8. Acknowledgments &amp; data credit</h2>
+<h2>10. Acknowledgments &amp; data credit</h2>
 <p>Built on the <a href="https://flyrank.ai">FlyRank ML Internship dataset</a>. The analysis and public-facing write-up are an educational research artifact using an anonymized starter dataset. Thanks to the FlyRank internship materials for the dataset context and workflow.</p>
 </section>
 </main></div>
