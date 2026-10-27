@@ -27,7 +27,7 @@ The paper is published from `main` → `/docs` using GitHub Pages. Check **Setti
 
 - [Open ML-11 capstone experiment in Google Colab](https://colab.research.google.com/github/Sai875/flyrank-ml-internship/blob/main/work/notebooks/capstone.ipynb)
 - The notebook installs its Python dependencies, downloads the public anonymized starter CSV at runtime if it is not present, and generates aggregate metrics plus a report-safe Precision@K chart. The raw CSV is runtime-only and must never be committed.
-- For automatic GitHub uploads, configure a Colab Secret named `GITHUB_TOKEN` with fine-grained **Contents: Read and write** access to this repository. Never save a token in notebook code or outputs.
+- The capstone GitHub Actions workflow executes the notebook and commits only the executed notebook, aggregate metrics, and report-safe chart. In Colab, use **File → Save a copy in GitHub** to save your notebook work. Never paste tokens into notebook cells or outputs.
 
 ## Open the starter notebooks in Colab
 
