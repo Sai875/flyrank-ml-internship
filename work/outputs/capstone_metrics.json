@@ -60,5 +60,63 @@
     "interpretation": "Invalid negative control only; never use this feature for final predictions."
   },
   "caveat": "Observed decline proxy; decision support only; no causal claims.",
-  "generated_utc": "2026-10-27T09:18:46.676699+00:00"
+  "generated_utc": "2026-10-27T09:28:32.183520+00:00",
+  "evidence_backed_insights": [
+    {
+      "id": "I1",
+      "finding": "The learned ranking beats the transparent rule at each evaluated top-K cutoff.",
+      "evidence": "Precision@10: model 0.500 vs rule 0.400; Precision@20: model 0.550 vs rule 0.400; Precision@50: model 0.620 vs rule 0.320; Precision@100: model 0.600 vs rule 0.310",
+      "action": "Keep the model as a candidate ordering aid for a human-reviewed queue; compare it against the rule on each new evaluation."
+    },
+    {
+      "id": "I2",
+      "finding": "The strongest claim is top-K triage, not strong general-purpose prediction.",
+      "evidence": "Precision@50 0.620 vs rule 0.320; test proxy rate 0.511; lift 1.21x; model ROC-AUC 0.563; average precision 0.555.",
+      "action": "Choose K from actual reviewer capacity and validate on a fresh time window; never interpret ranking scores as calibrated recovery probabilities."
+    },
+    {
+      "id": "I3",
+      "finding": "Client grouping avoids client leakage but evidence for new-client generalization is still limited.",
+      "evidence": "Train: 23,837 rows / 25 clients; test: 6,163 rows / 7 clients; overlapping clients: 0.",
+      "action": "Repeat evaluation across multiple client-grouped seeds and a future time window before operational adoption."
+    },
+    {
+      "id": "I4",
+      "finding": "A label-source field can create deceptively excellent scores and must stay excluded.",
+      "evidence": "Adding invalid trend_pct produces Precision@50 1.000 and ROC-AUC 0.955; the honest model has Precision@50 0.620 and ROC-AUC 0.563.",
+      "action": "Retain the feature-exclusion assertion and rerun leakage checks whenever the target or feature frame changes."
+    }
+  ],
+  "presentation_outline": [
+    {
+      "slide": 1,
+      "title": "Problem and decision",
+      "key_points": "Too many pages for manual review; rank the first pages to inspect, not the pages guaranteed to recover."
+    },
+    {
+      "slide": 2,
+      "title": "Data and target",
+      "key_points": "30,000-row anonymized starter snapshot; target is trend_direction == down; public-safe aggregates only."
+    },
+    {
+      "slide": 3,
+      "title": "Method and validation",
+      "key_points": "Logistic Regression vs transparent rule; grouped by client; seed 42; zero client overlap."
+    },
+    {
+      "slide": 4,
+      "title": "Results at reviewer capacity",
+      "key_points": "Precision@10/20/50/100; compare model, baseline and test proxy rate; emphasize Precision@50."
+    },
+    {
+      "slide": 5,
+      "title": "Leakage and limitations",
+      "key_points": "trend_pct negative control inflates results; modest ROC-AUC; seven held-out clients; snapshot label is not future outcome."
+    },
+    {
+      "slide": 6,
+      "title": "Action playbook and next experiment",
+      "key_points": "Human-check measurement, intent, CTR, visibility and freshness cues; test on a future window; no automatic edits."
+    }
+  ]
 }
