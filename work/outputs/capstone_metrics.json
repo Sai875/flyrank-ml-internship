@@ -29,25 +29,29 @@
     {
       "k": 20,
       "metric": "Precision@20",
-      "Week-4 baseline": 0.5,
+      "Week-4 baseline": 0.4,
       "Logistic Regression": 0.55,
       "test label rate": 0.5109524582184002
     },
     {
       "k": 50,
       "metric": "Precision@50",
-      "Week-4 baseline": 0.52,
+      "Week-4 baseline": 0.32,
       "Logistic Regression": 0.62,
       "test label rate": 0.5109524582184002
     },
     {
       "k": 100,
       "metric": "Precision@100",
-      "Week-4 baseline": 0.53,
+      "Week-4 baseline": 0.31,
       "Logistic Regression": 0.6,
       "test label rate": 0.5109524582184002
     }
   ],
+  "baseline_roc_auc": 0.497856883817089,
+  "model_roc_auc": 0.5625333602498176,
+  "baseline_average_precision": 0.4818625764958999,
+  "model_average_precision": 0.5546853804804083,
   "caveat": "Observed decline proxy; decision support only; no causal claims.",
-  "generated_utc": "2026-10-23T10:45:28.115145+00:00"
+  "generated_utc": "2026-10-27T09:14:11.444425+00:00"
 }
