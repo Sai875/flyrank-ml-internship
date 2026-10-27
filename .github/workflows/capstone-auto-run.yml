@@ -79,6 +79,14 @@ jobs:
           assert metrics.get("train_clients", 0) > 0 and metrics.get("test_clients", 0) > 0
           assert metrics.get("metrics"), "No baseline/model comparison found."
           assert len(metrics["metrics"]) >= 4, "Expected Precision@K metrics for K=10, 20, 50, and 100."
+          insights = metrics.get("evidence_backed_insights", [])
+          assert 3 <= len(insights) <= 5, "Expected 3–5 evidence-backed insights for capstone review."
+          for item in insights:
+              assert item.get("finding") and item.get("evidence") and item.get("action"), "Each insight needs a finding, evidence, and action."
+          outline = metrics.get("presentation_outline", [])
+          assert len(outline) >= 5, "Expected a presentation outline with at least five slides."
+          for slide in outline:
+              assert slide.get("slide") and slide.get("title") and slide.get("key_points"), "Presentation slides need a title and key points."
           leakage = metrics.get("leakage_control", {})
           assert leakage.get("feature") == "trend_pct", "Missing deliberate leakage control."
           assert leakage.get("included_in_final_features") is False, "Leaked feature must be excluded from final inputs."
