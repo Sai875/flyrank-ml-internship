@@ -72,7 +72,7 @@ jobs:
               if missing:
                   errors.append(f"{w03_path}: missing assignment checks: {missing}")
               for query in ("A", "B", "C"):
-                  if source.count(f"Verification query {query}") != 1:
+                  if source.count(f"# Verification query {query}:") != 1:
                       errors.append(f"{w03_path}: expected exactly one verification query {query}")
               if "abuhussein1504/flyrank-ml-internship-starter" in source:
                   errors.append(f"{w03_path}: points to another user's repository")
