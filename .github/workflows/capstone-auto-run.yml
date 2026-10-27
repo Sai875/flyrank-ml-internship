@@ -67,13 +67,35 @@ jobs:
           test -f work/figures/capstone_precision_at_k.png
           python - <<'PY'
           import json
+          import math
+          import subprocess
           from pathlib import Path
+          from PIL import Image
+
           metrics = json.loads(Path("work/outputs/capstone_metrics.json").read_text(encoding="utf-8"))
           assert metrics.get("experiment") == "capstone_client_grouped_holdout"
+          assert metrics.get("seed") == 42, "Unexpected random seed."
           assert metrics.get("overlapping_clients") == 0, "Client overlap detected."
           assert metrics.get("train_rows", 0) > 0 and metrics.get("test_rows", 0) > 0
+          assert metrics.get("train_clients", 0) > 0 and metrics.get("test_clients", 0) > 0
           assert metrics.get("metrics"), "No baseline/model comparison found."
-          print("Metrics verified: client overlap is zero and baseline/model results are present.")
+          assert len(metrics["metrics"]) >= 4, "Expected Precision@K metrics for K=10, 20, 50, and 100."
+          assert "trend_direction" not in metrics.get("features_numeric", [])
+          assert "trend_pct" not in metrics.get("features_numeric", [])
+          assert "client_id" not in metrics.get("features_numeric", [])
+          for row in metrics["metrics"]:
+              for key in ("Week-4 baseline", "Logistic Regression", "test label rate"):
+                  value = float(row[key])
+                  assert math.isfinite(value) and 0 <= value <= 1, f"Invalid {key}: {value}"
+          figure = Path("work/figures/capstone_precision_at_k.png")
+          assert figure.stat().st_size > 1000, "Capstone figure is suspiciously small."
+          with Image.open(figure) as im:
+              im.verify()
+          with Image.open(figure) as im:
+              assert im.width >= 100 and im.height >= 100, "Capstone figure dimensions are invalid."
+          tracked = subprocess.check_output(["git", "ls-files"], text=True).splitlines()
+          assert "data/raw/content_refresh_anonymized.csv" not in tracked, "Raw dataset must not be tracked."
+          print("Metrics, grouped split, feature exclusions, Precision@K values, PNG, and data-safety checks passed.")
           print(json.dumps({
               "train_rows": metrics["train_rows"],
               "test_rows": metrics["test_rows"],
@@ -94,6 +116,7 @@ jobs:
           git add work/notebooks/capstone.ipynb work/outputs/capstone_metrics.json work/figures/capstone_precision_at_k.png
           git diff --cached --quiet && echo "No generated changes to commit." && exit 0
           git commit -m "Execute capstone assignment [skip ci]"
+          git pull --rebase origin main
           git push
 
       - name: Upload execution artifacts for download
