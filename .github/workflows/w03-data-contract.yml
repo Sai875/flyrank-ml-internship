@@ -28,27 +28,65 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Check whether approved warehouse access is configured
-        id: access
+      - name: Require Hugging Face access token
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        shell: bash
         run: |
-          if [ -n "$HF_TOKEN" ]; then
-            echo "available=true" >> "$GITHUB_OUTPUT"
-            echo "HF_TOKEN is configured; W03 will execute against the gated warehouse."
-          else
-            echo "available=false" >> "$GITHUB_OUTPUT"
-            echo "::warning::W03 static checks still run, but warehouse execution was skipped because repository secret HF_TOKEN is not configured."
+          if [ -z "${HF_TOKEN:-}" ]; then
+            {
+              echo "## W03 warehouse run not started"
+              echo
+              echo "The required repository Actions secret `HF_TOKEN` is missing."
+              echo
+              echo "Add a Hugging Face **READ** token after accepting the gated dataset terms:"
+              echo "1. Open Repository Settings → Secrets and variables → Actions."
+              echo "2. Choose **New repository secret**."
+              echo "3. Set the name to `HF_TOKEN` and the value to your Hugging Face READ token."
+              echo "4. Re-run **Execute W03 data contract**."
+              echo
+              echo "No token was printed or stored in the workflow log."
+            } >> "$GITHUB_STEP_SUMMARY"
+            echo "::error::Cannot execute W03 against the gated warehouse without repository secret HF_TOKEN. See the job summary for exact steps."
+            exit 1
           fi
+          echo "HF_TOKEN is present; the value will not be printed."
 
       - name: Install notebook runtime
-        if: steps.access.outputs.available == 'true'
         run: |
           python -m pip install --upgrade pip
-          python -m pip install nbformat nbclient ipykernel duckdb pandas numpy scikit-learn
+          python -m pip install nbformat nbclient ipykernel duckdb pandas numpy scikit-learn huggingface_hub
+
+      - name: Verify token can access the gated warehouse
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        shell: bash
+        run: |
+          python - <<'PY'
+          import os
+          from huggingface_hub import hf_hub_download
+
+          token = os.environ["HF_TOKEN"]
+          try:
+              # A small schema dimension proves that the token has accepted-gate access
+              # before spending time reading the March fact-table partition.
+              path = hf_hub_download(
+                  repo_id="FlyRank/internship-warehouse",
+                  repo_type="dataset",
+                  filename="dim_clients.parquet",
+                  token=token,
+              )
+              print("Hugging Face access check passed for dim_clients.parquet.")
+          except Exception as exc:
+              raise SystemExit(
+                  "HF_TOKEN is present but cannot download the gated warehouse file. "
+                  "Confirm that you accepted the dataset terms in the same Hugging Face "
+                  "account that created this READ token, then update the repository secret. "
+                  f"Error type: {type(exc).__name__}"
+              ) from None
+          PY
 
       - name: Execute W03 from a fresh kernel
-        if: steps.access.outputs.available == 'true'
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
           MPLBACKEND: Agg
@@ -74,7 +112,6 @@ jobs:
           cp /tmp/w03-executed.ipynb work/notebooks/w03_data_contract.ipynb
 
       - name: Commit executed notebook
-        if: steps.access.outputs.available == 'true'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
