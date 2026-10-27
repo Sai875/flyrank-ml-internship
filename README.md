@@ -21,7 +21,7 @@ The paper is published from `main` → `/docs` using GitHub Pages. Check **Setti
 2. Read [GUIDE.md](GUIDE.md) to understand the repository structure and what to edit.
 3. Read [skills/README.md](skills/README.md) for the AI-assistant instruction library.
 4. Read [DATA_USE.md](DATA_USE.md) before using data.
-5. Keep [docs/data-dictionary.md](docs/data-dictionary.md) open while working with dataset columns.
+5. Confirm actual warehouse table and column names from the schema before running SQL.
 
 ## Run the capstone notebook in Colab
 
@@ -42,9 +42,6 @@ The full warehouse is hosted at [FlyRank/internship-warehouse](https://huggingfa
 | Path | Purpose |
 |---|---|
 | `notebooks/` | Starter notebooks for Weeks 1–2 and full-release exploration |
-| `scripts/` | Data preparation, baseline scoring, model training, evaluation, and report generation |
-| `data/raw/content_refresh_anonymized.csv` | Anonymized starter dataset, if included in this repository |
-| `outputs/` | Example pipeline outputs |
 | `work/` | My lane experiments, assignments, and capstone work |
 | `work/notebooks/` | My assignment notebooks |
 | `docs/` | ML foundations, lane guidance, tooling guidance, and data dictionary |
@@ -81,18 +78,11 @@ The W03 notebook should contain:
 
 Use a mid-panel month such as March 2026 for development. Treat June 2026, the final month in the `_sample` table, as a sealed test month and do not use it to develop label logic. Confirm actual table and column names from the schema before running queries.
 
-**Status note:** The W03 notebook must exist and be committed at the required path before the assignment is complete.
+**Status note:** The W03 notebook is present at the required path. The assignment is complete only after its cells run successfully, outputs are reviewed, and required checks and limitations are documented.
 
-## Local workflow (optional)
+## Local workflow
 
-```bash
-git clone <this-repo-url>
-cd flyrank-ml-internship
-pip install -r requirements.txt
-python scripts/run_all.py
-```
-
-This runs the reference pipeline on the bundled sample when the required files and dependencies are available.
+A general-purpose local pipeline is not currently included in this repository: `requirements.txt` and `scripts/run_all.py` are not present. Use the linked Google Colab notebooks for the documented workflow, or install each notebook's dependencies in your own environment. Do not assume a local `python scripts/run_all.py` command is available.
 
 ## Data safety
 
