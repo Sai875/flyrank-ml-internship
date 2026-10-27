@@ -80,6 +80,12 @@ jobs:
           assert metrics.get("train_clients", 0) > 0 and metrics.get("test_clients", 0) > 0
           assert metrics.get("metrics"), "No baseline/model comparison found."
           assert len(metrics["metrics"]) >= 4, "Expected Precision@K metrics for K=10, 20, 50, and 100."
+          leakage = metrics.get("leakage_control", {})
+          assert leakage.get("feature") == "trend_pct", "Missing deliberate leakage control."
+          assert leakage.get("included_in_final_features") is False, "Leaked feature must be excluded from final inputs."
+          for key in ("precision_at_50", "roc_auc"):
+              value = float(leakage[key])
+              assert math.isfinite(value) and 0 <= value <= 1, f"Invalid leakage-control metric {key}: {value}"
           assert "trend_direction" not in metrics.get("features_numeric", [])
           assert "trend_pct" not in metrics.get("features_numeric", [])
           assert "client_id" not in metrics.get("features_numeric", [])
