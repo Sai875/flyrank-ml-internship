@@ -78,7 +78,7 @@ The W03 notebook should contain:
 
 Use a mid-panel month such as March 2026 for development. Treat June 2026, the final month in the `_sample` table, as a sealed test month and do not use it to develop label logic. Confirm actual table and column names from the schema before running queries.
 
-**Status note:** The W03 notebook is present at the required path. The assignment is complete only after its cells run successfully, outputs are reviewed, and required checks and limitations are documented.
+**Status note:** The W03 notebook is present at the required path. The assignment is complete only after its cells run successfully, outputs are reviewed, and required checks and limitations are documented. The optional [W03 execution workflow](.github/workflows/w03-data-contract.yml) runs the notebook automatically when a repository Actions secret named `HF_TOKEN` is configured with an approved Hugging Face READ token; without that secret, CI performs structural checks and skips the gated warehouse run.
 
 ## Local workflow
 
