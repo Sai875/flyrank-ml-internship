@@ -1,91 +1,48 @@
-# Setup — ten minutes, at two moments
+# Setup — this repository
 
-You do **not** need everything on day one. There are exactly two setup moments in this track:
+This guide is for working in [Sai875/flyrank-ml-internship](https://github.com/Sai875/flyrank-ml-internship). The repository does not include the legacy starter pipeline, `requirements.txt`, `scripts/run_all.py`, or a committed raw CSV. Use the notebook workflows linked below rather than instructions that assume those paths exist.
 
-| When | What | Time |
-|---|---|---|
-| Before Assignment 1 (Week 1) | GitHub + Colab | ~5 min |
-| Before Week 3 | Hugging Face data access | ~5 min |
+## 1. Open and save notebooks
 
-Do each one right before you need it — with ONE exception worth doing on day one: create your free Hugging Face account and request access to the [internship warehouse dataset](https://huggingface.co/datasets/FlyRank/internship-warehouse) now. Approval is instant, and the data will already be waiting when Week 3 needs it (the token itself stays a Moment-2 job). Every step below includes the mistake that silently
-breaks it — read the ⚠️ lines even if you skip everything else.
+Open the notebook from its link in the repository README, or use these direct Colab links:
 
----
+- [W03 — Data Contract](https://colab.research.google.com/github/Sai875/flyrank-ml-internship/blob/main/work/notebooks/w03_data_contract.ipynb)
+- [Capstone](https://colab.research.google.com/github/Sai875/flyrank-ml-internship/blob/main/work/notebooks/capstone.ipynb)
+- [W07 — Content Action Playbook](https://colab.research.google.com/github/Sai875/flyrank-ml-internship/blob/main/work/notebooks/w07_action_playbook.ipynb)
 
-## Moment 1 — GitHub + Colab (before Assignment 1)
+Run a notebook from top to bottom, review the outputs, then use **File → Save a copy in GitHub** to save your notebook changes to this repository. The GitHub Actions workflows also execute the capstone and W07 notebooks and commit only their executed notebooks, aggregate metrics, and report-safe figures.
 
-1. **Create a GitHub account** (free) at [github.com/join](https://github.com/join) — skip if you have one.
-2. **Make your own copy of this repo** — one click, no git needed: on
-   [the starter repo page](https://github.com/flyrank-bih/flyrank-ml-internship-starter), press
-   **Use this template → Create a new repository** → public → any name → Create.
-   You now own a full copy: the notebooks, the pipeline, your `work/` folder, and the CI
-   leak-guard that keeps datasets out of git — all of it travels with you.
-   ⚠️ Don't create an empty repo by hand instead — an empty repo has no branch, and Colab's
-   *Save in GitHub* **silently does nothing** against it (the dialog just closes).
-3. **Give it ~30 seconds, then refresh your new repo's page.** A tiny automatic commit
-   ("Point Colab badges at this copy") lands right after creation — it rewires every Colab
-   badge in YOUR copy so notebooks open from your repo, with your saved work, and save back
-   to it with everything pre-filled.
-   ⚠️ Always click badges in **your** copy's README, not on the shared starter page — the
-   shared page's badges open read-only previews you can't save to directly.
-4. **Open Notebook 01** with its Colab badge in **your** README. It runs in your browser;
-   nothing to install.
-5. **Save your work**: *File → Save a copy in GitHub* → authorize Colab (pick the **same
-   account** that owns your copy) → the dialog is already pre-filled with your repo, the
-   right path, and branch `main` → **OK**. Colab opens the commit on GitHub — that's your
-   proof it worked. Leave "Include a link to Colaboratory" ticked — it keeps an open-in-Colab
-   badge at the top of the saved notebook.
-   ⚠️ Colab can only see repos of the GitHub account that authorized it. If your repo
-   "doesn't appear," you authorized a different account.
-6. **Also**: *File → Save a copy in Drive* — a personal backup so a closed tab never eats an
-   hour of work. Never submitted, just yours.
+## 2. Public starter data — capstone and W07
 
-**✅ Done when:** the executed notebook shows up in your copy on github.com **and, when you
-open the file there, the cell outputs are visible under the cells.** No outputs means Colab
-saved an unrun copy — back in Colab: **Runtime → Run all**, then save again. That
-**`github.com/you/your-repo`** URL is your submission for Assignment 1 — never a
-`colab.research.google.com` or `drive.google.com` link.
+The capstone and W07 notebooks download the public anonymized starter CSV from [FlyRank/internship-starter](https://huggingface.co/datasets/FlyRank/internship-starter) when a local copy is not available. The file is placed in `data/raw/content_refresh_anonymized.csv` for runtime use only.
 
-**Badges opening the shared repo instead of yours?** (You made your copy before the badge
-rewiring existed, or Actions is turned off on your repo.) Use Colab's built-in opener — same
-result, two more clicks: **File → Open notebook → GitHub tab** → paste
-`github.com/you/your-repo` → pick the notebook. Save is pre-filled exactly the same way, and
-Colab's **Recent** tab remembers it from then on.
+**Do not commit the CSV.** It is excluded from Git intentionally. The workflows remove the temporary file before committing generated outputs.
 
-**Seeing an OLD version of your notebook?** Don't panic — your work is safe. Colab sometimes
-shows a cached copy; the badges carry a cache-buster to prevent this, but if it ever happens
-anyway: check your repo on github.com first (your saved version is there), then reopen via
-the badge or **File → Open notebook → GitHub tab**.
+## 3. Gated warehouse data — W03
 
----
+The W03 data-contract notebook uses the larger [FlyRank/internship-warehouse](https://huggingface.co/datasets/FlyRank/internship-warehouse) dataset. Access is gated.
 
-## Moment 2 — Hugging Face data access (before Week 3)
+1. Sign in to Hugging Face and open the dataset page above.
+2. Complete the access form, use **`FlyRank ML Internship 2026`** as the affiliation, accept the data-use terms, and wait for access approval.
+3. After access is approved, create a Hugging Face **READ** token under Settings → Access Tokens.
+4. In Colab's **Secrets** panel (key icon), add the token under the name `HF_TOKEN` and allow the notebook to read it.
+5. Restart the runtime and run W03 from the first cell.
 
-The full warehouse (~79M rows) is hosted on Hugging Face behind a click-through gate.
+Never paste the token into notebook code, markdown, outputs, or a public issue.
 
-1. **Create a Hugging Face account** (free) at [huggingface.co/join](https://huggingface.co/join).
-2. **Accept the gate — in the browser, first.** Open
-   [`FlyRank/internship-warehouse`](https://huggingface.co/datasets/FlyRank/internship-warehouse),
-   fill the short form — put **`FlyRank ML Internship 2026`** as your affiliation — tick the
-   terms, **Agree**. Access is instant.
-   ⚠️ Order matters: a token created *before* you accept the gate gets `401` errors and
-   nothing tells you why.
-3. **Create a READ token**: huggingface.co → Settings → **Access Tokens** → Create new token →
-   type **Read** → name it (e.g. `internship`) → copy it somewhere safe.
-   ⚠️ Read, not Write — the track never needs more, and a leaked read token is harmless
-   to you.
-4. **Use it in notebooks**: paste it at the `getpass` prompt when a notebook asks, or store it
-   in Colab's **Secrets** panel (🔑 icon, name it `HF_TOKEN`).
-   ⚠️ **Never type the token into a code cell.** Your repo is public — a hardcoded token
-   gets committed with your notebook.
+### Optional automatic W03 execution in GitHub Actions
 
-**✅ Done when:** the first cells of Notebook 03 print the table row counts.
+To let [.github/workflows/w03-data-contract.yml](.github/workflows/w03-data-contract.yml) execute the gated notebook automatically, add a repository Actions secret named `HF_TOKEN` with the approved READ token:
 
----
+**Repository → Settings → Secrets and variables → Actions → New repository secret**
 
-## The one-account rule (saves an hour of confusion)
+If that secret is absent, the workflow intentionally skips warehouse execution; notebook-format and assignment-structure checks still run. Do not send the token in chat or commit it to the repository.
 
-- The GitHub account **Colab is authorized on** = the account that **owns your submission repo**.
-- The Hugging Face account **that accepted the gate** = the account **whose token you paste**.
+## 4. Checks and outputs
 
-Mixing accounts is the root of almost every "it doesn't work" — one of each, used everywhere.
+- `notebook-validation.yml` checks notebook format and assignment-specific requirements.
+- `capstone-auto-run.yml` runs the public-starter capstone, validates grouped-split metrics and leakage controls, validates the figure, and commits report-safe outputs.
+- `w07-action-playbook.yml` runs W07 and validates aggregate metrics, tier counts, and the figure.
+- `w03-data-contract.yml` runs W03 only when the approved `HF_TOKEN` secret is configured.
+
+Only aggregate metrics, public-safe figures, and notebooks without secrets or raw records should be committed. Follow [DATA_USE.md](DATA_USE.md) before working with data.
