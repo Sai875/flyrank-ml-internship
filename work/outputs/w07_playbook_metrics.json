@@ -35,5 +35,5 @@
   "tier_policy": "HIGH=top 10%; MEDIUM=next to top 30%; MONITOR=remaining held-out rows",
   "evidence_boundary": "Observed decline proxy from one snapshot; ranking is review prioritization, not future prediction or causal effect.",
   "metrics_precision": "full-precision evaluation metrics and aggregate queue counts; no row-level records",
-  "generated_utc": "2026-10-27T09:07:29.123730+00:00"
+  "generated_utc": "2026-10-27T09:12:27.990399+00:00"
 }
