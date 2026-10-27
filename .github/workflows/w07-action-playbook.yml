@@ -48,7 +48,7 @@ jobs:
               notebook,
               timeout=900,
               kernel_name="python3",
-              allow_errors=True,
+              allow_errors=False,
               resources={"metadata": {"path": str(Path.cwd())}},
           )
           executed = client.execute()
