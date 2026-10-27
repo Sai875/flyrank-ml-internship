@@ -14,6 +14,24 @@ The project uses anonymized FlyRank search data for educational analysis. Result
 
 The paper is published from `main` → `/docs` using GitHub Pages. Check **Settings → Pages** to confirm the publishing source is `main` and `/docs`, then use the **Actions** tab to inspect the latest Pages build. Do not commit raw datasets, client-level rows, credentials, or tokens.
 
+## Capstone submission
+
+This artifact is prepared for the **Machine Learning** track: a reproducible classification experiment, evidence-backed insights, a human-reviewed action playbook, and a presentation outline.
+
+**Use this as the main public submission link:**  
+https://github.com/Sai875/flyrank-ml-internship
+
+The repository contains the report, runnable notebook, aggregate metrics, chart, and workflow that re-executes the notebook. Supporting links, when the portal allows them:
+
+- Published report: https://sai875.github.io/flyrank-ml-internship/
+- Executed notebook: https://github.com/Sai875/flyrank-ml-internship/blob/main/work/notebooks/capstone.ipynb
+- Run notebook in Colab: https://colab.research.google.com/github/Sai875/flyrank-ml-internship/blob/main/work/notebooks/capstone.ipynb
+- Aggregate metrics: https://github.com/Sai875/flyrank-ml-internship/blob/main/work/outputs/capstone_metrics.json
+- Automated execution and checks: https://github.com/Sai875/flyrank-ml-internship/actions
+
+**Portal steps:** sign in to the FlyRank internship portal, open the Capstone item under your **Machine Learning** track, paste the repository URL above into the requested artifact/link field, include the published report as a supporting link if there is a separate field, and submit. The portal's status changes only after you submit there and FlyRank reviews the artifact. Do not submit this project under another specialization expecting it to count for the ML certificate.
+
+Do not commit raw datasets, client-level rows, credentials, or tokens.
 
 ## Getting started
 
