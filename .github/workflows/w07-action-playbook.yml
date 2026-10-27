@@ -141,4 +141,5 @@ jobs:
           git add work/notebooks/w07_action_playbook.ipynb work/outputs/w07_playbook_metrics.json work/figures/w07_priority_tiers.png
           git diff --cached --quiet && echo "No generated changes to commit." && exit 0
           git commit -m "Execute W07 action playbook [skip ci]"
+          git pull --rebase origin main
           git push
