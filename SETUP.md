@@ -36,7 +36,7 @@ To let [.github/workflows/w03-data-contract.yml](.github/workflows/w03-data-cont
 
 **Repository → Settings → Secrets and variables → Actions → New repository secret**
 
-If that secret is absent, the workflow intentionally skips warehouse execution; notebook-format and assignment-structure checks still run. Do not send the token in chat or commit it to the repository.
+If that secret is absent, the workflow fails early with the exact setup instructions in the GitHub Actions job summary rather than silently skipping execution. It checks that the token can download a small warehouse dimension before starting the notebook. Do not send the token in chat or commit it to the repository.
 
 ## 4. Checks and outputs
 
