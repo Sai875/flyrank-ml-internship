@@ -1,0 +1,85 @@
+name: Execute W03 data contract
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "work/notebooks/w03_data_contract.ipynb"
+      - ".github/workflows/w03-data-contract.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: w03-data-contract
+  cancel-in-progress: false
+
+jobs:
+  execute:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Check whether approved warehouse access is configured
+        id: access
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+        run: |
+          if [ -n "$HF_TOKEN" ]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+            echo "HF_TOKEN is configured; W03 will execute against the gated warehouse."
+          else
+            echo "available=false" >> "$GITHUB_OUTPUT"
+            echo "::warning::W03 static checks still run, but warehouse execution was skipped because repository secret HF_TOKEN is not configured."
+          fi
+
+      - name: Install notebook runtime
+        if: steps.access.outputs.available == 'true'
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install nbformat nbclient ipykernel duckdb pandas numpy scikit-learn
+
+      - name: Execute W03 from a fresh kernel
+        if: steps.access.outputs.available == 'true'
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          MPLBACKEND: Agg
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import nbformat
+          from nbclient import NotebookClient
+
+          source = Path("work/notebooks/w03_data_contract.ipynb")
+          notebook = nbformat.read(source, as_version=4)
+          client = NotebookClient(
+              notebook,
+              timeout=1200,
+              kernel_name="python3",
+              allow_errors=False,
+              resources={"metadata": {"path": str(Path.cwd())}},
+          )
+          executed = client.execute()
+          nbformat.write(executed, "/tmp/w03-executed.ipynb")
+          print(f"Executed {len(executed.cells)} W03 cells without notebook errors.")
+          PY
+          cp /tmp/w03-executed.ipynb work/notebooks/w03_data_contract.ipynb
+
+      - name: Commit executed notebook
+        if: steps.access.outputs.available == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add work/notebooks/w03_data_contract.ipynb
+          git diff --cached --quiet && echo "No notebook output changes." && exit 0
+          git commit -m "Execute W03 data contract [skip ci]"
+          git pull --rebase origin main
+          git push
