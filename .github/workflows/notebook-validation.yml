@@ -5,9 +5,11 @@ on:
     branches: [main]
     paths:
       - "**/*.ipynb"
+      - ".github/workflows/notebook-validation.yml"
   pull_request:
     paths:
       - "**/*.ipynb"
+      - ".github/workflows/notebook-validation.yml"
   workflow_dispatch:
 
 permissions:
@@ -29,10 +31,9 @@ jobs:
       - name: Install notebook validator
         run: python -m pip install --upgrade nbformat
 
-      - name: Validate all tracked notebooks
+      - name: Validate notebook format and assignment contracts
         run: |
           python - <<'PY'
-          from pathlib import Path
           import subprocess
           import nbformat
 
@@ -43,15 +44,52 @@ jobs:
               raise SystemExit("No tracked notebooks found.")
 
           errors = []
+          notebooks = {}
           for name in paths:
               try:
                   notebook = nbformat.read(name, as_version=4)
                   nbformat.validate(notebook)
+                  notebooks[name] = notebook
                   print(f"OK: {name} ({len(notebook.cells)} cells)")
               except Exception as exc:
                   errors.append(f"{name}: {type(exc).__name__}: {exc}")
 
+          # W03 reads a gated warehouse. CI performs structural checks; only an
+          # approved Hugging Face account/token can validate real data execution.
+          w03_path = "work/notebooks/w03_data_contract.ipynb"
+          if w03_path in notebooks:
+              source = "\n".join(
+                  "".join(cell.get("source", []))
+                  for cell in notebooks[w03_path].cells
+              )
+              required = [
+                  "Verification query A", "Verification query B", "Verification query C",
+                  "FEATURES =", "future_clicks_7d", "honest_metrics",
+                  "GroupShuffleSplit", "clicks_7d", "impressions_7d",
+                  "position_7d", "gsc_available_7d",
+              ]
+              missing = [item for item in required if item not in source]
+              if missing:
+                  errors.append(f"{w03_path}: missing assignment checks: {missing}")
+              for query in ("A", "B", "C"):
+                  if source.count(f"Verification query {query}") != 1:
+                      errors.append(f"{w03_path}: expected exactly one verification query {query}")
+              if "abuhussein1504/flyrank-ml-internship-starter" in source:
+                  errors.append(f"{w03_path}: points to another user's repository")
+              if "assert LEAKAGE_ONLY not in FEATURES" not in source:
+                  errors.append(f"{w03_path}: leakage exclusion assertion is missing")
+
+          # Guard against a capstone badge that opens another user's repository.
+          capstone_path = "work/notebooks/capstone.ipynb"
+          if capstone_path in notebooks:
+              source = "\n".join(
+                  "".join(cell.get("source", []))
+                  for cell in notebooks[capstone_path].cells
+              )
+              if "vivekpandiitt/FlyRank_Ml_Assignment" in source:
+                  errors.append(f"{capstone_path}: contains a foreign-repository Colab link")
+
           if errors:
               raise SystemExit("\n".join(errors))
-          print(f"Validated {len(paths)} notebook(s).")
+          print(f"Validated {len(notebooks)} notebook(s), including assignment-specific static checks.")
           PY
