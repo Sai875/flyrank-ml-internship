@@ -52,6 +52,13 @@
   "model_roc_auc": 0.5625333602498176,
   "baseline_average_precision": 0.4818625764958999,
   "model_average_precision": 0.5546853804804083,
+  "leakage_control": {
+    "feature": "trend_pct",
+    "included_in_final_features": false,
+    "precision_at_50": 1.0,
+    "roc_auc": 0.9551016606529538,
+    "interpretation": "Invalid negative control only; never use this feature for final predictions."
+  },
   "caveat": "Observed decline proxy; decision support only; no causal claims.",
-  "generated_utc": "2026-10-27T09:14:11.444425+00:00"
+  "generated_utc": "2026-10-27T09:15:58.054674+00:00"
 }
