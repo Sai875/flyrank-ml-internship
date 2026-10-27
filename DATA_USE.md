@@ -1,12 +1,14 @@
 # Data Use & Public-Safety Rules
 
-The one dataset used by the starter workflow is:
+The public repository intentionally does **not** commit the starter CSV. The capstone and W07 notebooks download the public anonymized starter file at runtime and place a temporary working copy at:
 
 ```text
 data/raw/content_refresh_anonymized.csv
 ```
 
-It is a small, anonymized slice of content-performance data — one row per pseudonymized content item, with observed search/engagement metrics, content metadata, freshness fields, and derived comparison windows.
+The W03 assignment instead uses the gated `FlyRank/internship-warehouse` daily fact table after access is approved. Do not commit either the temporary starter CSV or warehouse exports.
+
+The starter CSV is a small, anonymized slice of content-performance data — one row per pseudonymized content item, with observed search/engagement metrics, content metadata, freshness fields, and derived comparison windows.
 
 ## Data interpretation
 
