@@ -97,7 +97,7 @@ jobs:
           # Do not commit runtime data or generated row-level exports.
           rm -f data/raw/content_refresh_anonymized.csv
           git status --short
-          if (("${#failed_notebooks[@]}")); then
+          if [ "${#failed_notebooks[@]}" -gt 0 ]; then
             printf "Notebook execution failed: %s\\n" "${failed_notebooks[@]}"
             exit 1
           fi
