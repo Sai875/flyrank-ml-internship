@@ -6,10 +6,14 @@ on:
     paths:
       - "**/*.ipynb"
       - ".github/workflows/notebook-validation.yml"
+      - "docs/index.html"
+      - "submission/paper_url.txt"
   pull_request:
     paths:
       - "**/*.ipynb"
       - ".github/workflows/notebook-validation.yml"
+      - "docs/index.html"
+      - "submission/paper_url.txt"
   workflow_dispatch:
 
 permissions:
@@ -50,6 +54,18 @@ jobs:
                   notebook = nbformat.read(name, as_version=4)
                   nbformat.validate(notebook)
                   notebooks[name] = notebook
+                  source = "\\n".join(
+                      "".join(cell.get("source", []))
+                      for cell in notebook.cells
+                  )
+                  # Every assignment notebook that clones a repository must clone this repo.
+                  if name.startswith("work/notebooks/"):
+                      import re
+                      for match in re.findall(r'REPO_URL\\s*=\\s*["\\']([^"\\']+)["\\']', source):
+                          if "github.com/Sai875/flyrank-ml-internship.git" not in match:
+                              errors.append(f"{name}: REPO_URL points outside this repository: {match}")
+                      if "pretom26/ml_internship_flyrankAI" in source:
+                          errors.append(f"{name}: contains a stale foreign-repository reference")
                   print(f"OK: {name} ({len(notebook.cells)} cells)")
               except Exception as exc:
                   errors.append(f"{name}: {type(exc).__name__}: {exc}")
