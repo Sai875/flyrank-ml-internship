@@ -8,20 +8,20 @@ This repository is your assignment workspace and portfolio. The notebooks below 
 
 ## Assignment notebooks — open in Google Colab
 
-All links below point to `Sai875/flyrank-ml-internship`, not the shared starter repository.
+All Colab links below point to `Sai875/flyrank-ml-internship`, not the shared starter repository. I checked that the notebooks are valid and that saved output cells do not contain execution-error records. The W03 Data Contract is the exception: it requires approved access to the gated warehouse, so its outputs must be generated after access is configured.
 
-| Week | Card | Notebook | Open in Colab | View on GitHub |
-|---|---|---|---|---|
-| 1 | ML-02 | Research question | [Open](https://colab.research.google.com/github/Sai875/flyrank-ml-internship/blob/main/work/notebooks/w01_research_question.ipynb?flush_cache=true) | [Notebook](work/notebooks/w01_research_question.ipynb) |
-| 2 | ML-03 | ML task framing | [Open](https://colab.research.google.com/github/Sai875/flyrank-ml-internship/blob/main/work/notebooks/w02_ml_task_framing.ipynb?flush_cache=true) | [Notebook](work/notebooks/w02_ml_task_framing.ipynb) |
-| 3 | ML-04 | Data contract | [Open](https://colab.research.google.com/github/Sai875/flyrank-ml-internship/blob/main/work/notebooks/w03_data_contract.ipynb?flush_cache=true) | [Notebook](work/notebooks/w03_data_contract.ipynb) |
-| 3 | ML-05 | Feature leakage check | [Open](https://colab.research.google.com/github/Sai875/flyrank-ml-internship/blob/main/work/notebooks/w03_feature_leakage_check.ipynb?flush_cache=true) | [Notebook](work/notebooks/w03_feature_leakage_check.ipynb) |
-| 4 | ML-06 | Signal audit | [Open](https://colab.research.google.com/github/Sai875/flyrank-ml-internship/blob/main/work/notebooks/w04_signal_audit.ipynb?flush_cache=true) | [Notebook](work/notebooks/w04_signal_audit.ipynb) |
-| 4 | ML-07 | Baseline score | [Open](https://colab.research.google.com/github/Sai875/flyrank-ml-internship/blob/main/work/notebooks/w04_baseline_score.ipynb?flush_cache=true) | [Notebook](work/notebooks/w04_baseline_score.ipynb) |
-| 5 | ML-08 | Model | [Open](https://colab.research.google.com/github/Sai875/flyrank-ml-internship/blob/main/work/notebooks/w05_model.ipynb?flush_cache=true) | [Notebook](work/notebooks/w05_model.ipynb) |
-| 6 | ML-09 | Validation audit | [Open](https://colab.research.google.com/github/Sai875/flyrank-ml-internship/blob/main/work/notebooks/w06_validation_audit.ipynb?flush_cache=true) | [Notebook](work/notebooks/w06_validation_audit.ipynb) |
-| 7 | ML-10 | Action playbook | [Open](https://colab.research.google.com/github/Sai875/flyrank-ml-internship/blob/main/work/notebooks/w07_action_playbook.ipynb?flush_cache=true) | [Notebook](work/notebooks/w07_action_playbook.ipynb) |
-| 8 | ML-11 | Capstone | [Open](https://colab.research.google.com/github/Sai875/flyrank-ml-internship/blob/main/work/notebooks/capstone.ipynb?flush_cache=true) | [Notebook](work/notebooks/capstone.ipynb) |
+| Week | Card | Notebook | Open in Colab | View on GitHub | Saved code outputs |
+|---|---|---|---|---|---|
+| 1 | ML-02 | Research question | [Open](https://colab.research.google.com/github/Sai875/flyrank-ml-internship/blob/main/work/notebooks/w01_research_question.ipynb?flush_cache=true) | [Notebook](work/notebooks/w01_research_question.ipynb) | Saved |
+| 2 | ML-03 | ML task framing | [Open](https://colab.research.google.com/github/Sai875/flyrank-ml-internship/blob/main/work/notebooks/w02_ml_task_framing.ipynb?flush_cache=true) | [Notebook](work/notebooks/w02_ml_task_framing.ipynb) | Saved |
+| 3 | ML-04 | Data contract | [Open](https://colab.research.google.com/github/Sai875/flyrank-ml-internship/blob/main/work/notebooks/w03_data_contract.ipynb?flush_cache=true) | [Notebook](work/notebooks/w03_data_contract.ipynb) | Pending gated dataset access |
+| 3 | ML-05 | Feature leakage check | [Open](https://colab.research.google.com/github/Sai875/flyrank-ml-internship/blob/main/work/notebooks/w03_feature_leakage_check.ipynb?flush_cache=true) | [Notebook](work/notebooks/w03_feature_leakage_check.ipynb) | Saved |
+| 4 | ML-06 | Signal audit | [Open](https://colab.research.google.com/github/Sai875/flyrank-ml-internship/blob/main/work/notebooks/w04_signal_audit.ipynb?flush_cache=true) | [Notebook](work/notebooks/w04_signal_audit.ipynb) | Saved |
+| 4 | ML-07 | Baseline score | [Open](https://colab.research.google.com/github/Sai875/flyrank-ml-internship/blob/main/work/notebooks/w04_baseline_score.ipynb?flush_cache=true) | [Notebook](work/notebooks/w04_baseline_score.ipynb) | Saved |
+| 5 | ML-08 | Model | [Open](https://colab.research.google.com/github/Sai875/flyrank-ml-internship/blob/main/work/notebooks/w05_model.ipynb?flush_cache=true) | [Notebook](work/notebooks/w05_model.ipynb) | Saved |
+| 6 | ML-09 | Validation audit | [Open](https://colab.research.google.com/github/Sai875/flyrank-ml-internship/blob/main/work/notebooks/w06_validation_audit.ipynb?flush_cache=true) | [Notebook](work/notebooks/w06_validation_audit.ipynb) | Saved |
+| 7 | ML-10 | Action playbook | [Open](https://colab.research.google.com/github/Sai875/flyrank-ml-internship/blob/main/work/notebooks/w07_action_playbook.ipynb?flush_cache=true) | [Notebook](work/notebooks/w07_action_playbook.ipynb) | Saved |
+| 8 | ML-11 | Capstone | [Open](https://colab.research.google.com/github/Sai875/flyrank-ml-internship/blob/main/work/notebooks/capstone.ipynb?flush_cache=true) | [Notebook](work/notebooks/capstone.ipynb) | Saved |
 
 ### How to use the links
 
