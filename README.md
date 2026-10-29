@@ -36,7 +36,7 @@ If Colab cannot open a notebook, use **File → Open notebook → GitHub**, then
 
 - **W03 Data Contract:** requires access to the gated [FlyRank/internship-warehouse dataset](https://huggingface.co/datasets/FlyRank/internship-warehouse). Follow [SETUP.md](SETUP.md) and never paste a Hugging Face token into code or chat.
 - **Public sample notebooks:** use the anonymized starter CSV from [FlyRank/internship-starter](https://huggingface.co/datasets/FlyRank/internship-starter).
-- **Automated execution:** [Public assignment workflow](.github/workflows/assignment-auto-run.yml) executes W01, W03 leakage check, W04 signal audit/baseline, and W06 validation audit and saves outputs. [Capstone workflow](.github/workflows/capstone-auto-run.yml) and [W07 workflow](.github/workflows/w07-action-playbook.yml) separately execute and validate those notebooks. W03 Data Contract remains gated on Hugging Face access.
+- **Automated execution:** [Public assignment workflow](.github/workflows/assignment-auto-run.yml) executes W01, W03 leakage check, W04 signal audit/baseline, W05 model, and W06 validation audit and saves outputs. [Capstone workflow](.github/workflows/capstone-auto-run.yml) and [W07 workflow](.github/workflows/w07-action-playbook.yml) separately execute and validate those notebooks. W03 Data Contract remains gated on Hugging Face access.
 - **Notebook checks:** [Notebook validation workflow](.github/workflows/notebook-validation.yml) validates notebook structure and assignment requirements.
 
 ## Project and data safety
