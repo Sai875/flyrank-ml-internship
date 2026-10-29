@@ -125,8 +125,8 @@ jobs:
 
       - name: Commit executed notebook and aggregate outputs
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "Sai875"
+          git config user.email "185791881+Sai875@users.noreply.github.com"
           git add work/notebooks/capstone.ipynb work/outputs/capstone_metrics.json work/figures/capstone_precision_at_k.png
           git diff --cached --quiet && echo "No generated changes to commit." && exit 0
           git commit -m "Execute capstone assignment [skip ci]"

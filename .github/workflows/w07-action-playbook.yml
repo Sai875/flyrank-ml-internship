@@ -136,8 +136,8 @@ jobs:
 
       - name: Commit executed notebook and report-safe outputs
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "Sai875"
+          git config user.email "185791881+Sai875@users.noreply.github.com"
           git add work/notebooks/w07_action_playbook.ipynb work/outputs/w07_playbook_metrics.json work/figures/w07_priority_tiers.png
           git diff --cached --quiet && echo "No generated changes to commit." && exit 0
           git commit -m "Execute W07 action playbook [skip ci]"

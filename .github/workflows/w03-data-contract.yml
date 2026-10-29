@@ -113,8 +113,8 @@ jobs:
 
       - name: Commit executed notebook
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config user.name "Sai875"
+          git config user.email "185791881+Sai875@users.noreply.github.com"
           git add work/notebooks/w03_data_contract.ipynb
           git diff --cached --quiet && echo "No notebook output changes." && exit 0
           git commit -m "Execute W03 data contract [skip ci]"
