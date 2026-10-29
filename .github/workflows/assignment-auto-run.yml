@@ -50,7 +50,7 @@ jobs:
             work/notebooks/w03_feature_leakage_check.ipynb \
             work/notebooks/w04_signal_audit.ipynb \
             work/notebooks/w04_baseline_score.ipynb \
-            work/notebooks/w05_model.ipynb \\
+            work/notebooks/w05_model.ipynb \
             work/notebooks/w06_validation_audit.ipynb
           do
             echo "Executing $notebook_path"
