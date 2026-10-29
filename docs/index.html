@@ -78,19 +78,19 @@ a{color:#075eaa;text-underline-offset:3px}a:hover{color:#063e70}header{backgroun
 <h2>4. Results</h2>
 <p>On the client-grouped test set, the Logistic Regression ranking outperformed the reproduced rule baseline at each reported cutoff. The test base rate was 0.511, so Precision@50 of 0.620 corresponds to 1.21× lift over that base rate. ROC-AUC was 0.563 and average precision was 0.555: useful context that also cautions against describing the model as a strong general-purpose classifier.</p>
 <table><thead><tr><th>Metric</th><th class="num">Rule baseline</th><th class="num">Logistic Regression</th></tr></thead><tbody>
-<tr><td>Precision@10</td><td class="num">0.400</td><td class="num">0.500</td></tr>
-<tr><td>Precision@20</td><td class="num">0.400</td><td class="num">0.550</td></tr>
+<tr><td>Precision@10</td><td class="num">0.100</td><td class="num">0.500</td></tr>
+<tr><td>Precision@20</td><td class="num">0.300</td><td class="num">0.550</td></tr>
 <tr><td>Precision@50 <span class="pill">Primary</span></td><td class="num">0.320</td><td class="num"><strong>0.620</strong></td></tr>
-<tr><td>Precision@100</td><td class="num">0.310</td><td class="num">0.600</td></tr>
+<tr><td>Precision@100</td><td class="num">0.350</td><td class="num">0.600</td></tr>
 </tbody></table>
 <figure class="chart">
 <svg viewBox="0 0 680 300" role="img" aria-labelledby="pchart-title pchart-desc" xmlns="http://www.w3.org/2000/svg">
-<title id="pchart-title">Precision at K for baseline and Logistic Regression</title><desc id="pchart-desc">At K 10, 20, 50 and 100, Logistic Regression scores 0.50, 0.55, 0.62 and 0.60. The rule baseline scores 0.40, 0.40, 0.32 and 0.31.</desc>
+<title id="pchart-title">Precision at K for baseline and Logistic Regression</title><desc id="pchart-desc">At K 10, 20, 50 and 100, Logistic Regression scores 0.50, 0.55, 0.62 and 0.60. The rule baseline scores 0.10, 0.30, 0.32 and 0.35.</desc>
 <rect width="680" height="300" rx="8" fill="#fff"/>
 <g stroke="#dbe2e8" stroke-width="1"><line x1="75" y1="235" x2="630" y2="235"/><line x1="75" y1="185" x2="630" y2="185"/><line x1="75" y1="135" x2="630" y2="135"/><line x1="75" y1="85" x2="630" y2="85"/><line x1="75" y1="35" x2="630" y2="35"/></g>
 <g fill="#526171" font-size="12" text-anchor="end"><text x="65" y="239">0.0</text><text x="65" y="189">0.2</text><text x="65" y="139">0.4</text><text x="65" y="89">0.6</text><text x="65" y="39">0.8</text></g>
 <g fill="#176b63"><rect x="125" y="110" width="28" height="125" rx="3"/><rect x="260" y="97.5" width="28" height="137.5" rx="3"/><rect x="395" y="80" width="28" height="155" rx="3"/><rect x="530" y="85" width="28" height="150" rx="3"/></g>
-<g fill="#b55a2a"><rect x="158" y="135" width="28" height="100" rx="3"/><rect x="293" y="135" width="28" height="100" rx="3"/><rect x="428" y="155" width="28" height="80" rx="3"/><rect x="563" y="157.5" width="28" height="77.5" rx="3"/></g>
+<g fill="#b55a2a"><rect x="158" y="210" width="28" height="25" rx="3"/><rect x="293" y="160" width="28" height="75" rx="3"/><rect x="428" y="155" width="28" height="80" rx="3"/><rect x="563" y="147.5" width="28" height="87.5" rx="3"/></g>
 <g fill="#17212b" font-size="12" text-anchor="middle"><text x="155" y="260">@10</text><text x="290" y="260">@20</text><text x="425" y="260">@50</text><text x="560" y="260">@100</text></g>
 <g font-size="12" fill="#17212b"><rect x="180" y="276" width="12" height="12" rx="2" fill="#176b63"/><text x="198" y="286">Logistic Regression</text><rect x="360" y="276" width="12" height="12" rx="2" fill="#b55a2a"/><text x="378" y="286">Rule baseline</text></g>
 </svg>
@@ -115,7 +115,7 @@ a{color:#075eaa;text-underline-offset:3px}a:hover{color:#063e70}header{backgroun
 <h2>5. Evidence-backed insights</h2>
 <p>The current notebook run produces four review findings from the client-grouped holdout. They are deliberately framed as measured triage evidence, not claims about future search performance.</p>
 <ol>
-<li><strong>The learned ranking beats the rule at all reported queue sizes.</strong> Precision@10 is 0.500 vs 0.400; Precision@20 is 0.550 vs 0.400; Precision@50 is 0.620 vs 0.320; and Precision@100 is 0.600 vs 0.310. <em>Action:</em> keep the learned ranker as a candidate ordering aid and compare it with the rule on every new evaluation.</li>
+<li><strong>The learned ranking beats the rule at all reported queue sizes.</strong> Precision@10 is 0.500 vs 0.100; Precision@20 is 0.550 vs 0.300; Precision@50 is 0.620 vs 0.320; and Precision@100 is 0.600 vs 0.350. <em>Action:</em> keep the learned ranker as a candidate ordering aid and compare it with the rule on every new evaluation.</li>
 <li><strong>The evidence supports top-K triage, not a strong general-purpose classifier.</strong> Precision@50 is 0.620 against a 0.511 test proxy rate (1.21× lift), while ROC-AUC is 0.563 and average precision is 0.555. <em>Action:</em> choose K from actual reviewer capacity and validate on a future time window; do not interpret scores as calibrated probabilities of recovery.</li>
 <li><strong>Client grouping reduces a common validation leak, but unseen-client evidence is limited.</strong> The split contains 23,837 train rows across 25 clients and 6,163 test rows across 7 clients, with zero client overlap. <em>Action:</em> repeat the experiment across more client groups and a future time period before operational use.</li>
 <li><strong>Label leakage can make a weak model appear excellent.</strong> The invalid negative control that adds <code>trend_pct</code> reaches Precision@50 1.000 and ROC-AUC 0.955, compared with 0.620 and 0.563 for the honest feature set. <em>Action:</em> keep label-source fields excluded and rerun leakage checks whenever the target or feature frame changes.</li>
