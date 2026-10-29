@@ -60,7 +60,7 @@
     "interpretation": "Invalid negative control only; never use this feature for final predictions."
   },
   "caveat": "Observed decline proxy; decision support only; no causal claims.",
-  "generated_utc": "2026-10-29T16:23:47.886033+00:00",
+  "generated_utc": "2026-10-29T16:39:42.118711+00:00",
   "evidence_backed_insights": [
     {
       "id": "I1",
