@@ -61,7 +61,7 @@ jobs:
                   # Every assignment notebook that clones a repository must clone this repo.
                   if name.startswith("work/notebooks/"):
                       import re
-                      for match in re.findall(r'REPO_URL\\s*=\\s*["\\']([^"\\']+)["\\']', source):
+                      for match in re.findall(r"""REPO_URL\s*=\s*["']([^"']+)["']""", source):
                           if "github.com/Sai875/flyrank-ml-internship.git" not in match:
                               errors.append(f"{name}: REPO_URL points outside this repository: {match}")
                       if "pretom26/ml_internship_flyrankAI" in source:
