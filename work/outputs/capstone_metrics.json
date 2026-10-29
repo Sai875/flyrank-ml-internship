@@ -22,14 +22,14 @@
     {
       "k": 10,
       "metric": "Precision@10",
-      "Week-4 baseline": 0.4,
+      "Week-4 baseline": 0.1,
       "Logistic Regression": 0.5,
       "test label rate": 0.5109524582184002
     },
     {
       "k": 20,
       "metric": "Precision@20",
-      "Week-4 baseline": 0.4,
+      "Week-4 baseline": 0.3,
       "Logistic Regression": 0.55,
       "test label rate": 0.5109524582184002
     },
@@ -43,14 +43,14 @@
     {
       "k": 100,
       "metric": "Precision@100",
-      "Week-4 baseline": 0.31,
+      "Week-4 baseline": 0.35,
       "Logistic Regression": 0.6,
       "test label rate": 0.5109524582184002
     }
   ],
-  "baseline_roc_auc": 0.497856883817089,
+  "baseline_roc_auc": 0.4772062438376388,
   "model_roc_auc": 0.5625333602498176,
-  "baseline_average_precision": 0.4818625764958999,
+  "baseline_average_precision": 0.46989046720662936,
   "model_average_precision": 0.5546853804804083,
   "leakage_control": {
     "feature": "trend_pct",
@@ -60,12 +60,12 @@
     "interpretation": "Invalid negative control only; never use this feature for final predictions."
   },
   "caveat": "Observed decline proxy; decision support only; no causal claims.",
-  "generated_utc": "2026-10-29T15:37:06.863419+00:00",
+  "generated_utc": "2026-10-29T15:40:32.733926+00:00",
   "evidence_backed_insights": [
     {
       "id": "I1",
       "finding": "The learned ranking beats the transparent rule at each evaluated top-K cutoff.",
-      "evidence": "Precision@10: model 0.500 vs rule 0.400; Precision@20: model 0.550 vs rule 0.400; Precision@50: model 0.620 vs rule 0.320; Precision@100: model 0.600 vs rule 0.310",
+      "evidence": "Precision@10: model 0.500 vs rule 0.100; Precision@20: model 0.550 vs rule 0.300; Precision@50: model 0.620 vs rule 0.320; Precision@100: model 0.600 vs rule 0.350",
       "action": "Keep the model as a candidate ordering aid for a human-reviewed queue; compare it against the rule on each new evaluation."
     },
     {
