@@ -22,6 +22,8 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -45,7 +47,7 @@ jobs:
               echo '3. Set the name to HF_TOKEN and the value to your Hugging Face READ token.'
               echo "4. Re-run **Execute W03 data contract**."
               echo
-              echo 'No token was printed or stored in the workflow log.'
+              echo 'Never paste the token into notebook code, workflow YAML, or logs.'
             } >> "$GITHUB_STEP_SUMMARY"
             echo "::error::Cannot execute W03 against the gated warehouse without repository secret HF_TOKEN. See the job summary for exact steps."
             exit 1
@@ -55,7 +57,8 @@ jobs:
       - name: Install notebook runtime
         run: |
           python -m pip install --upgrade pip
-          python -m pip install nbformat nbclient ipykernel duckdb pandas numpy scikit-learn huggingface_hub
+          python -m pip install nbformat nbclient ipykernel duckdb pandas numpy scikit-learn huggingface_hub pyarrow
+          python -m pip check
 
       - name: Verify token can access the gated warehouse
         env:
@@ -66,22 +69,19 @@ jobs:
           import os
           from huggingface_hub import hf_hub_download
 
-          token = os.environ["HF_TOKEN"]
           try:
-              # A small schema dimension proves that the token has accepted-gate access
-              # before spending time reading the March fact-table partition.
-              path = hf_hub_download(
+              hf_hub_download(
                   repo_id="FlyRank/internship-warehouse",
                   repo_type="dataset",
                   filename="dim_clients.parquet",
-                  token=token,
+                  token=os.environ["HF_TOKEN"],
               )
               print("Hugging Face access check passed for dim_clients.parquet.")
           except Exception as exc:
               raise SystemExit(
                   "HF_TOKEN is present but cannot download the gated warehouse file. "
-                  "Confirm that you accepted the dataset terms in the same Hugging Face "
-                  "account that created this READ token, then update the repository secret. "
+                  "Accept the dataset terms using the same Hugging Face account that "
+                  "created this READ token, then update the repository secret if needed. "
                   f"Error type: {type(exc).__name__}"
               ) from None
           PY
@@ -90,6 +90,7 @@ jobs:
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
           MPLBACKEND: Agg
+        shell: bash
         run: |
           python - <<'PY'
           from pathlib import Path
@@ -98,25 +99,40 @@ jobs:
 
           source = Path("work/notebooks/w03_data_contract.ipynb")
           notebook = nbformat.read(source, as_version=4)
-          client = NotebookClient(
+          nbformat.validate(notebook)
+
+          executed = NotebookClient(
               notebook,
               timeout=1200,
               kernel_name="python3",
               allow_errors=False,
               resources={"metadata": {"path": str(Path.cwd())}},
-          )
-          executed = client.execute()
-          nbformat.write(executed, "/tmp/w03-executed.ipynb")
-          print(f"Executed {len(executed.cells)} W03 cells without notebook errors.")
+          ).execute()
+
+          nbformat.validate(executed)
+          code_cells = [cell for cell in executed.cells if cell.cell_type == "code"]
+          if not code_cells or any(cell.execution_count is None for cell in code_cells):
+              raise SystemExit("Notebook validation failed: one or more code cells did not execute.")
+
+          output_path = Path("/tmp/w03-executed.ipynb")
+          nbformat.write(executed, output_path)
+          print(f"Executed and validated {len(code_cells)} W03 code cells without notebook errors.")
           PY
           cp /tmp/w03-executed.ipynb work/notebooks/w03_data_contract.ipynb
 
       - name: Commit executed notebook
+        shell: bash
         run: |
+          set -euo pipefail
           git config user.name "Sai875"
           git config user.email "185791881+Sai875@users.noreply.github.com"
           git add work/notebooks/w03_data_contract.ipynb
-          git diff --cached --quiet && echo "No notebook output changes." && exit 0
+
+          if git diff --cached --quiet; then
+            echo "No notebook output changes."
+            exit 0
+          fi
+
           git commit -m "Execute W03 data contract [skip ci]"
           git pull --rebase origin main
-          git push
+          git push origin HEAD:main
