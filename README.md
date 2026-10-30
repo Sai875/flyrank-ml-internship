@@ -2,16 +2,6 @@
 
 **Applied Search Intelligence: Google Search Ranking & Discoverability**
 
-[![Notebook validation](https://github.com/Sai875/flyrank-ml-internship/actions/workflows/notebook-validation.yml/badge.svg)](https://github.com/Sai875/flyrank-ml-internship/actions/workflows/notebook-validation.yml)
-[![Assignment notebooks](https://github.com/Sai875/flyrank-ml-internship/actions/workflows/assignment-auto-run.yml/badge.svg)](https://github.com/Sai875/flyrank-ml-internship/actions/workflows/assignment-auto-run.yml)
-[![Capstone](https://github.com/Sai875/flyrank-ml-internship/actions/workflows/capstone-auto-run.yml/badge.svg)](https://github.com/Sai875/flyrank-ml-internship/actions/workflows/capstone-auto-run.yml)
-[![W07 action playbook](https://github.com/Sai875/flyrank-ml-internship/actions/workflows/w07-action-playbook.yml/badge.svg)](https://github.com/Sai875/flyrank-ml-internship/actions/workflows/w07-action-playbook.yml)
-
-A notebook-based machine-learning internship portfolio exploring search-performance signals, validation, and content discoverability. The work uses anonymized data and produces decision-support insights for human review—not claims of causal impact or guaranteed ranking changes.
-
-**Quick links:** [Assignment notebooks](#assignment-notebooks--open-in-google-colab) · [Setup](SETUP.md) · [Data-use rules](DATA_USE.md) · [Repository guide](GUIDE.md) · [Capstone paper](https://sai875.github.io/flyrank-ml-internship/)
-
-
 This repository is your assignment workspace and portfolio. The notebooks below are hosted in **your repository** and their Colab links open those exact files. Start by opening a notebook, run its cells from top to bottom, review the outputs, then use **File → Save a copy in GitHub** to save your work.
 
 > **Important:** Colab displays outputs only after cells have run. The capstone, W07, and W03 notebooks have GitHub Actions workflows that execute them and save the executed notebooks. W03 uses a gated Hugging Face warehouse and requires approved dataset access plus the repository Actions secret `HF_TOKEN`. See [SETUP.md](SETUP.md).
