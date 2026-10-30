@@ -188,7 +188,7 @@ jobs:
             # Rebuild the output commit on the newest main without replaying a
             # conflicting notebook commit. The source comparison above ensures
             # this cannot replace newer notebook code or markdown.
-            git reset --soft origin/main
+            git reset --mixed origin/main
             git add "$NOTEBOOK"
             if git diff --cached --quiet; then
               echo "Latest main already contains the desired notebook state."
