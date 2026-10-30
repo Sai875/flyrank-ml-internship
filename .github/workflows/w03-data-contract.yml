@@ -120,13 +120,14 @@ jobs:
           PY
           cp /tmp/w03-executed.ipynb work/notebooks/w03_data_contract.ipynb
 
-      - name: Commit executed notebook
+      - name: Commit executed notebook safely
         shell: bash
         run: |
           set -euo pipefail
+          NOTEBOOK="work/notebooks/w03_data_contract.ipynb"
           git config user.name "Sai875"
           git config user.email "185791881+Sai875@users.noreply.github.com"
-          git add work/notebooks/w03_data_contract.ipynb
+          git add "$NOTEBOOK"
 
           if git diff --cached --quiet; then
             echo "No notebook output changes."
@@ -134,5 +135,72 @@ jobs:
           fi
 
           git commit -m "Execute W03 data contract [skip ci]"
-          git pull --rebase origin main
-          git push origin HEAD:main
+
+          # Another run may finish the same notebook while this job is executing.
+          # Rebase can conflict on notebook outputs, so compare notebook source
+          # before rebuilding the commit on top of the latest main.
+          for attempt in 1 2 3; do
+            git fetch origin main
+            set +e
+            python - <<'PY'
+          import subprocess
+          import sys
+          import nbformat
+          from pathlib import Path
+
+          path = "work/notebooks/w03_data_contract.ipynb"
+          local = nbformat.read(path, as_version=4)
+          remote_bytes = subprocess.check_output(["git", "show", f"origin/main:{path}"])
+          remote = nbformat.reads(remote_bytes.decode("utf-8"), as_version=4)
+
+          def source_signature(nb):
+              return [(cell.cell_type, cell.source) for cell in nb.cells]
+
+          if source_signature(local) != source_signature(remote):
+              print("The W03 notebook source changed on main while this run was executing. Refusing to overwrite newer work; rerun the workflow against the latest main.")
+              sys.exit(11)
+
+          code_cells = [cell for cell in remote.cells if cell.cell_type == "code"]
+          remote_executed = bool(code_cells) and all(cell.execution_count is not None for cell in code_cells)
+          remote_error = any(
+              output.output_type == "error"
+              for cell in code_cells
+              for output in cell.get("outputs", [])
+          )
+          if remote_executed and not remote_error:
+              print("The same W03 notebook source has already been executed and committed by another run.")
+              sys.exit(10)
+          sys.exit(0)
+          PY
+            check_status=$?
+            set -e
+
+            if [ "$check_status" -eq 10 ]; then
+              echo "Executed notebook is already saved on main; no duplicate commit needed."
+              exit 0
+            elif [ "$check_status" -eq 11 ]; then
+              exit 1
+            elif [ "$check_status" -ne 0 ]; then
+              echo "Could not safely compare the current and remote W03 notebooks."
+              exit "$check_status"
+            fi
+
+            # Rebuild the output commit on the newest main without replaying a
+            # conflicting notebook commit. The source comparison above ensures
+            # this cannot replace newer notebook code or markdown.
+            git reset --soft origin/main
+            git add "$NOTEBOOK"
+            if git diff --cached --quiet; then
+              echo "Latest main already contains the desired notebook state."
+              exit 0
+            fi
+            git commit -m "Execute W03 data contract [skip ci]"
+            if git push origin HEAD:main; then
+              echo "Executed W03 notebook committed to main."
+              exit 0
+            fi
+            echo "Push raced with another main update; checking the latest notebook before retry $((attempt + 1))."
+          done
+
+          echo "Could not publish the executed notebook after 3 safe attempts."
+          exit 1
